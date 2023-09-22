@@ -46,8 +46,10 @@ synonyms                       : false
   <include file="table/eba_demo_appr_approvers_table.xml"/> 
   <include file="package_spec/eba_demo_appr_package_spec.xml"/> 
   <include file="package_spec/eba_demo_appr_data_package_spec.xml"/> 
+  <include file="package_spec/eba_demo_appr_dept_pkg_package_spec.xml"/> 
   <include file="table/eba_demo_appr_emp_table.xml"/> 
   <include file="table/eba_demo_appr_sal_history_table.xml"/> 
   <include file="package_body/eba_demo_appr_package_body.xml"/> 
   <include file="package_body/eba_demo_appr_data_package_body.xml"/> 
+  <include file="package_body/eba_demo_appr_dept_pkg_package_body.xml"/> 
 </databaseChangeLog> 

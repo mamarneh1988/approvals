@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+	<changeSet id="7801c2aa0bd7eebe394e90d62ce39a35e2c5fdab" author="(HR)-Generated" failOnError="false"   runOnChange="true" runAlways="false"  >
+		<n0:createOraclePackageBody objectName="EBA_DEMO_APPR_DEPT_PKG" objectType="PACKAGE_BODY" ownerName="HR"  replaceIfExists="true" >
+			<n0:source><![CDATA[
+  CREATE OR REPLACE EDITIONABLE PACKAGE BODY "HR"."EBA_DEMO_APPR_DEPT_PKG" AS
+  -- Procedure to insert data into the "EBA_DEMO_APPR_DEPT" table
+  PROCEDURE insert_dept(
+    p_deptno NUMBER,
+    p_dname VARCHAR2,
+    p_loc VARCHAR2
+  ) IS
+  BEGIN
+    INSERT INTO EBA_DEMO_APPR_DEPT (DEPTNO, DNAME, LOC)
+    VALUES (p_deptno, p_dname, p_loc);
+    COMMIT;
+  EXCEPTION
+    WHEN OTHERS THEN
+      ROLLBACK;
+      RAISE;
+  END insert_dept;
+END eba_demo_appr_dept_pkg;
+]]></n0:source>
+		</n0:createOraclePackageBody>
+	</changeSet>
+</databaseChangeLog>
