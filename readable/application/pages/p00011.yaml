@@ -1,0 +1,273 @@
+---
+# ====== Page: Email Settings ================================
+id: 11
+identification: 
+  name: Email Settings
+  alias: EMAIL-SETTINGS
+  title: Email Settings
+
+appearance: 
+  page-mode: Normal
+  page-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Email Settings ==============================
+  id: 310942433667510453
+  identification: 
+    title: Email Settings
+    type: Breadcrumb
+
+  source: 
+    breadcrumb: Breadcrumb # 294246200659215771
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: REGION_POSITION_01
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Title Bar # 294355728737215894
+    template-options: 
+    - '#DEFAULT#'
+    - t-BreadcrumbRegion--useBreadcrumbTitle
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    appearance: 
+      breadcrumb-template: Breadcrumb # 294417891517215966
+      template-options: 
+      - '#DEFAULT#'
+
+- # ====== Region: Overview ====================================
+  id: 2365863299559757038
+  identification: 
+    title: Overview
+    type: Static Content
+
+  source: 
+    html-code: <p>The Job Change task definition conditionally sends an email notification upon task completion with an Approved outcome. The email will go to the address you configure on this page as an application setting. If this setting is blank, the Job Change approval email is skipped by evaluating an application item whose value is computed from this setting.</p>
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 8
+    column-css-classes: 
+    - col-sm-12
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h2
+    - js-headingLevel-2
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P11_DEMO_NOTIFICATION_EMAIL ==============
+  id: 268647429788404241
+  identification: 
+    name: P11_DEMO_NOTIFICATION_EMAIL
+    type: Text Field
+
+  label: 
+    label: Email for Demo Notification
+    alignment: Left
+
+  settings: 
+    subtype: Text
+    trim-spaces: Leading and Trailing
+    text-case: NO CHANGE
+    submit-when-enter-pressed: false
+    disabled: false
+
+  layout: 
+    sequence: 20
+    region: No Parent
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: Save ========================================
+  id: 268648095907404247
+  identification: 
+    button-name: Save
+    label: Save
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: 1
+    new-column: true
+    column-span: 1
+    alignment: Right
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+validations: 
+- # ====== Validation: Valid Email =============================
+  id: 268647956963404246
+  identification: 
+    name: Valid Email
+
+  execution: 
+    sequence: 10
+
+  validation: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: "regexp_like (:P11_DEMO_NOTIFICATION_EMAIL, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')"
+    always-execute: false
+
+  error: 
+    error-message: Please provide a valid email address.
+    display-location: Inline with Field and in Notification
+
+computations: 
+- # ====== Computation: P11_DEMO_NOTIFICATION_EMAIL ============
+  id: 268647573839404242
+  identification: 
+    item-name: P11_DEMO_NOTIFICATION_EMAIL
+
+  execution: 
+    sequence: 10
+    point: Before Header
+
+  computation: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL');
+
+processes: 
+- # ====== Process: Update App Setting =========================
+  id: 268647634291404243
+  identification: 
+    name: Update App Setting
+    type: Execute Code
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: "apex_app_setting.set_value('DEMO_NOTIFICATION_EMAIL',:P11_DEMO_NOTIFICATION_EMAIL);"
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+

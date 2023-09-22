@@ -1,0 +1,100 @@
+---
+- # ====== Static Application File: readme_approvals.jpg =======
+  id: 223181038739238753
+  identification: 
+    file-name: readme_approvals.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: readme_employees2.jpg ======
+  id: 223181553409238757
+  identification: 
+    file-name: readme_employees2.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: readme_salapprovers.jpg ====
+  id: 223183834969238773
+  identification: 
+    file-name: readme_salapprovers.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: AboutTheSampleApplication.md
+  id: 223435873618969291
+  identification: 
+    file-name: AboutTheSampleApplication.md.txt
+
+  attributes: 
+    mime-type: text/plain
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: AboutTheApprovalsFeature.md.
+  id: 223436254760970647
+  identification: 
+    file-name: AboutTheApprovalsFeature.md.txt
+
+  attributes: 
+    mime-type: text/plain
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: readme_taskviews.jpg =======
+  id: 223444241605210780
+  identification: 
+    file-name: readme_taskviews.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: icons/app-icon-32.png ======
+  id: 294441899686216033
+  identification: 
+    file-name: icons/app-icon-32.png
+
+  attributes: 
+    mime-type: image/png
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: icons/app-icon-192.png =====
+  id: 294442127811216035
+  identification: 
+    file-name: icons/app-icon-192.png
+
+  attributes: 
+    mime-type: image/png
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: icons/app-icon-512.png =====
+  id: 294442485225216037
+  identification: 
+    file-name: icons/app-icon-512.png
+
+  attributes: 
+    mime-type: image/png
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: app.css ====================
+  id: 297816070878990571
+  identification: 
+    file-name: app.css
+
+  attributes: 
+    mime-type: text/css
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: app.min.css ================
+  id: 297843059659140510
+  identification: 
+    file-name: app.min.css
+
+  attributes: 
+    mime-type: text/css
+    file-character-set: Unicode UTF-8
+

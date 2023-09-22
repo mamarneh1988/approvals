@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+	<changeSet id="0793e726476b9b2175e218364c0b4ecaa6e7f3dc" author="(HR)-Generated" failOnError="false"   runOnChange="true" runAlways="false"  >
+		<n0:createOraclePackageBody objectName="EBA_DEMO_APPR" objectType="PACKAGE_BODY" ownerName="HR"  replaceIfExists="true" >
+			<n0:source><![CDATA[
+  CREATE OR REPLACE EDITIONABLE PACKAGE BODY "HR"."EBA_DEMO_APPR" as
+   function get_participant_for_role(p_task_def_static_id varchar2, 
+                                      p_job varchar2, 
+                                      p_proposed_sal number, 
+                                      p_role varchar2) return varchar2 is
+        l_ret varchar2(4000);
+        l_include_fallback_entries boolean := false;
+        l_current_user varchar2(200) := apex_application.g_user;
+    begin
+        apex_debug.info('### get_participant_for_role '||
+                        '(taskdef=%s)(job=%s)(role=%s)',
+                        p_task_def_static_id,p_job,p_role);
+        apex_debug.info('### get_participant_for_role (curruser=%s)',
+                        l_current_user);        
+        for j in (select username,job_codes
+                    from eba_demo_appr_approvers 
+                    where task_def_static_id = upper(p_task_def_static_id)
+                    and (job_codes is null
+                         or p_job is null 
+                         or (':'||job_codes||':' like '%:'||upper(p_job)||':%')
+                        )
+                    and (min_salary <= p_proposed_sal or min_salary is null)
+                    and participant_role = upper(p_role) 
+                    and (participant_role = 'ADMIN' or username != l_current_user)
+                    order by job_codes nulls last
+                   ) loop
+            -- Only include the fallback entries with null JOB_CODES
+            -- if no more specific ones found
+            if j.job_codes is null 
+               and not l_include_fallback_entries 
+               and l_ret is null then
+                l_include_fallback_entries := true;
+            end if;
+            if j.job_codes is not null or l_include_fallback_entries then
+                if l_ret is not null then
+                    l_ret := l_ret ||',';
+                end if;
+                l_ret := l_ret || upper(j.username);
+            end if;
+        end loop;
+        apex_debug.info('### get_participant_for_role (returning=%s)', l_ret);      
+        return l_ret;
+    end;
+    --
+    function get_approver_for(p_task_def_static_id varchar2, 
+                              p_job varchar2, 
+                              p_proposed_sal number) return varchar2 is
+    begin
+        return get_participant_for_role(p_task_def_static_id,
+                                        p_job,
+                                        p_proposed_sal,
+                                        'APPROVER');
+    end;
+    --
+    function get_admin_for(p_task_def_static_id varchar2, 
+                           p_job varchar2, 
+                           p_proposed_sal number) 
+                           return varchar2 is
+    begin
+        return get_participant_for_role(p_task_def_static_id,
+                                        p_job,
+                                        p_proposed_sal,
+                                        'ADMIN');
+    end;    
+    --
+    function get_approver_for(p_task_def_static_id varchar2, 
+                              p_empno number, 
+                              p_job varchar2, 
+                              p_proposed_sal number) return varchar2 is
+    begin
+       apex_debug.info('### get_approver_for '||
+                       '(taskdef=%s)(empno=%s)(job=%s)(sal=%s)',
+                        p_task_def_static_id,p_empno,p_job,p_proposed_sal);
+        return get_participant_for_role(p_task_def_static_id,
+                                        p_job,
+                                        p_proposed_sal,
+                                        'APPROVER');
+    end;
+    --
+    function get_admin_for(p_task_def_static_id varchar2, 
+                           p_empno number, 
+                           p_job varchar2, 
+                           p_proposed_sal number) return varchar2 is
+    begin
+       apex_debug.info('### get_admin_for '||
+                       '(taskdef=%s)(empno=%s)(job=%s)(sal=%s)',
+                        p_task_def_static_id,p_empno,p_job,p_proposed_sal);
+        return get_participant_for_role(p_task_def_static_id,
+                                        p_job,
+                                        p_proposed_sal,
+                                        'ADMIN');
+    end;    
+    --    
+    function user_has_open_approvals return boolean is
+        l_app_user varchar2(30) := apex_application.g_user;
+    begin
+        for j in (select null 
+                   from apex_task_participants tp
+                   left join apex_tasks t on t.task_id = tp.task_id
+                   where tp.participant = l_app_user
+                   and t.state_code in ('UNASSIGNED','ASSIGNED')
+                   and tp.participant_type = 'POTENTIAL_OWNER'
+                   and (t.initiator is null or t.initiator != l_app_user)
+                   fetch first row only) loop
+            apex_debug.info('### Returning true for user %s '||
+                            'having open approvals tasks',l_app_user);
+            return true;
+        end loop;
+        return false;
+    end;
+    function user_has_open_admin_tasks return boolean is
+        l_app_user varchar2(30) := apex_application.g_user;
+    begin
+        for j in (select null 
+                   from apex_task_participants tp
+                   left join apex_tasks t on t.task_id = tp.task_id
+                   where tp.participant = l_app_user
+                   and t.state_code in ('UNASSIGNED','ASSIGNED')
+                   and tp.participant_type = 'BUSINESS_ADMIN'
+                   fetch first row only) loop
+            apex_debug.info('### Returning true for user %s '||
+                            'having open admin tasks',l_app_user);
+            return true;
+        end loop;
+        return false;
+    end;
+    --
+    function details_task_url(p_app_id number, p_task_id number, p_url varchar2) return varchar2 is
+    begin
+        return apex_plugin_util.replace_substitutions (
+                    p_value => replace(replace(p_url, '&APP_ID.', p_app_id), '&TASK_ID.', p_task_id),
+                    p_escape => false);
+    end;
+    --
+    procedure validate_admin_and_approver(p_task_def_static_id varchar2, 
+                                          p_empno number,
+                                          p_proposed_sal number,
+                                          p_admin out varchar2,
+                                          p_approver out varchar2) is
+        l_job eba_demo_appr_emp.job%type;
+    begin
+        select job
+        into l_job
+        from eba_demo_appr_emp
+        where empno = p_empno;
+        p_admin := get_admin_for(p_task_def_static_id,
+                                 p_empno,
+                                 l_job,
+                                 p_proposed_sal);
+        p_approver := get_approver_for(p_task_def_static_id,
+                                       p_empno,
+                                       l_job,
+                                       p_proposed_sal);
+    end;
+    --
+    /*
+     * Workaround for RDBMS 21c issue directly using listagg() against view w/ json_table()
+     */
+    function admins_for_task(p_task_id number) return varchar2 is
+        l_ret varchar2(2000);
+    begin
+        -- Return admins as CSV
+        select listagg(participant,', ')
+               within group (order by participant)
+        into l_ret
+        from apex_task_participants
+        where task_id = p_task_id
+        and participant_type = 'BUSINESS_ADMIN';
+        return l_ret; 
+    end;
+    --
+    function approvers_for_task(p_task_id number) return varchar2 is
+        l_ret varchar2(2000);
+    begin
+        -- Return approvers as CSV leaving out initiator
+        select listagg(participant,', ')
+               within group (order by participant)
+        into l_ret
+        from apex_task_participants tp, apex_tasks t
+        where tp.task_id = p_task_id
+        and t.task_id = tp.task_id
+        and participant_type = 'POTENTIAL_OWNER'
+        and (t.initiator is null or t.initiator != tp.participant);
+        return l_ret; 
+    end;
+    function get_laptop_approver(p_renewal_count number) return varchar2 is
+    begin
+        return 
+          case p_renewal_count
+            when 0 then 'JANE'
+            when 1 then 'STEVE'
+            else 'BO'
+          end;
+    end;    
+end;
+]]></n0:source>
+		</n0:createOraclePackageBody>
+	</changeSet>
+</databaseChangeLog>

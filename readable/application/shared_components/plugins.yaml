@@ -1,0 +1,213 @@
+---
+- # ====== Plugin: Sample Apps Footer ==========================
+  id: 780787262673575
+  identification: 
+    name: Sample Apps Footer
+
+  source: 
+    pl/sql-code: |
+      function render (   p_region in apex_plugin.t_region,
+                          p_plugin in apex_plugin.t_plugin,
+                          p_is_printer_friendly in boolean )
+              return apex_plugin.t_region_render_result is
+      begin
+          sys.htp.p('<ul class="t-Cards t-Cards--sampleAppsFooter t-Cards--featured force-fa-lg t-Cards--displayIcons t-Cards--hideBody t-Cards--animColorFill">');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/twitter" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-twitter" style="color: #1da1f2"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Twitter</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/linkedin" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-linkedin" style="color: #0077b5"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">LinkedIn</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/facebook" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-facebook" style="color: #3b5998"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Facebook</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/youtube" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-youtube" style="color: red"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">YouTube</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-apex" style="color: #707070"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">apex.oracle.com</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/community" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-users" style="color: #707070"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Oracle APEX Community</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/forum" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-comments-o" style="color: #707070"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Discussion Forums</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('<li class="t-Cards-item">');
+          sys.htp.p('  <div class="t-Card">');
+          sys.htp.p('    <a href="https://apex.oracle.com/autonomous" target="_blank" class="t-Card-wrap">');
+          sys.htp.p('      <div class="t-Card-icon"><span class="t-Icon fa fa-cloud" style="color: #707070"></span></div>');
+          sys.htp.p('      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Autonomous Database + Oracle APEX</h3></div>');
+          sys.htp.p('    </a>');
+          sys.htp.p('  </div>');
+          sys.htp.p('</li>');
+          sys.htp.p('</ul>');
+          return null;
+      end render;
+
+- # ====== Plugin: Source Display ==============================
+  id: 781069654673660
+  identification: 
+    name: Source Display
+
+  source: 
+    pl/sql-code: |
+      function render (
+              p_region              in apex_plugin.t_region,
+              p_plugin              in apex_plugin.t_plugin,
+              p_is_printer_friendly in boolean )
+          return apex_plugin.t_region_render_result
+      is
+          -- It's better to have named variables instead of using the generic ones,
+          -- makes the code more readable. We are using the same defaults for the
+          -- required attributes as in the plug-in attribute configuration, because
+          -- they can still be null. Keep them in sync!
+          c_region_static_id    constant varchar2(255) := p_region.attribute_01;
+          c_highlight_page_item constant varchar2(255) := p_region.attribute_02;
+      
+          l_highlight_term varchar2(4000) := '';
+      
+          cursor sql_csr( d_region_static_id in varchar2 ) is
+              select source_type, 10 seq, null series_name, region_source source
+              from apex_application_page_regions
+              where application_id = :APP_ID
+                  and page_id = :APP_PAGE_ID
+                  and static_id = d_region_static_id
+                  and ( source_type_code like 'PLUGIN%'
+                      or source_type_code like 'STATIC_TEXT%'
+                      or source_type in (
+                          'Calendar',
+                          'Easy Calendar',
+                          'Interactive Report',
+                          'Interactive Grid',
+                          'List View',
+                          'Report',
+                          'PL/SQL',
+                          'Tabular Form'
+                      )
+                  )
+              union all
+              select reg.source_type, 10 seq, null series_name, to_clob(tr.tree_query) source
+              from apex_application_page_regions reg,
+                  apex_application_page_trees tr
+              where reg.application_id = :APP_ID
+                  and reg.page_id = :APP_PAGE_ID
+                  and reg.static_id = d_region_static_id
+                  and tr.application_id = reg.application_id
+                  and tr.page_id = reg.page_id
+                  and tr.region_id = reg.region_id
+                  and reg.source_type in ('JavaScript Tree')
+              union all
+              select reg.source_type, 10 seq, null series_name, to_clob(list_query) source
+              from apex_application_page_regions reg,
+                  apex_application_lists li
+              where reg.application_id = :APP_ID
+                  and reg.page_id = :APP_PAGE_ID
+                  and reg.static_id = d_region_static_id
+                  and li.application_id = reg.application_id
+                  and li.list_id = reg.list_id
+                  and reg.source_type in ( 'List' )
+              order by 1, 2;
+          sql_rec sql_csr%ROWTYPE;
+      begin
+          if c_highlight_page_item is not null then
+              l_highlight_term := apex_escape.html(trim(lower(v(c_highlight_page_item))));
+          end if;
+      
+          for sql_rec in sql_csr( c_region_static_id ) loop
+              if sql_rec.series_name is not null then
+                  sys.htp.p('<p><strong>'||apex_escape.html(sql_rec.series_name)||':</strong></p>');
+              end if;
+              sys.htp.p('<pre>');
+              if l_highlight_term is not null then
+                  sys.htp.p(replace(apex_escape.html(sql_rec.source),
+                      l_highlight_term,'<span class="highlight">'||l_highlight_term||'</span>'));
+              else
+                  sys.htp.p(apex_escape.html(sql_rec.source));
+              end if;
+              sys.htp.p('</pre>');
+          end loop;
+      
+          return null;
+      end render;
+
+- # ====== Plugin: Markdown Region =============================
+  id: 760348167110042146
+  identification: 
+    name: Markdown Region
+
+  source: 
+    pl/sql-code: |
+      function render (
+          p_region              in apex_plugin.t_region,
+          p_plugin              in apex_plugin.t_plugin,
+          p_is_printer_friendly in boolean )
+      return apex_plugin.t_region_render_result
+      as
+          l_clob_md   clob;
+          l_clob_html clob;
+      
+          l_based_on  varchar2(100) := p_region.attribute_01;
+      
+          l_to_return apex_plugin.t_region_render_result;
+      begin
+      
+          if l_based_on = 'INLINE' then
+              l_clob_md := p_region.attribute_02;
+          elsif l_based_on = 'APP_STATIC_FILE' then
+              begin
+                  select replace(to_clob( file_content ),'#'||'APP_FILES'||'#',V('APP_FILES'))
+                    into l_clob_md
+                    from apex_application_static_files
+                   where application_id = :APP_ID
+                     and file_name      = p_region.attribute_03
+                     and mime_type      like 'text/%';
+              exception
+                  when no_data_found then
+                      raise_application_error( -20000, 'Application static file "' || p_region.attribute_03 || '" not found or is not text/%' );
+              end;
+          end if;
+          l_clob_html := apex_markdown.to_html( l_clob_md );
+      
+          apex_util.prn(
+              p_clob      => '<div class="is-markdownified">' || l_clob_html || '</div>',
+              p_escape    => false );
+      
+          return l_to_return;
+      end render;
+

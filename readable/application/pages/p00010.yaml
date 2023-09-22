@@ -1,0 +1,415 @@
+---
+# ====== Page: Test Approver Assignment ======================
+id: 10
+identification: 
+  name: Test Approver Assignment
+  alias: TEST-APPROVER-ASSIGNMENT
+  title: Test Approver Assignment
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  width: 300
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: First item on page
+  warn-on-unsaved-changes: false
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Test Salary Change Approver Assignments =====
+  id: 578705714851149511
+  identification: 
+    title: Test Salary Change Approver Assignments
+    type: Static Content
+
+  layout: 
+    sequence: 30
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes # 294282948967215830
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P10_EMPNO ================================
+  id: 310061077331745296
+  identification: 
+    name: P10_EMPNO
+    type: Select List
+
+  label: 
+    label: Empno
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 10
+    region: Test Salary Change Approver Assignments # 578705714851149511
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: true
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select ename||' ['||job||']', empno
+      from eba_demo_appr_emp
+      order by ename
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P10_PROPOSED_SALARY ======================
+  id: 310061421034745306
+  identification: 
+    name: P10_PROPOSED_SALARY
+    type: Number Field
+
+  label: 
+    label: Proposed Salary
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 20
+    region: Test Salary Change Approver Assignments # 578705714851149511
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P10_TEST_RESULT_APPROVER =================
+  id: 310062260510745307
+  identification: 
+    name: P10_TEST_RESULT_APPROVER
+    type: Display Only
+
+  label: 
+    label: Approver
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 70
+    region: Test Salary Change Approver Assignments # 578705714851149511
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P10_TEST_RESULT_ADMIN ====================
+  id: 310062662155745307
+  identification: 
+    name: P10_TEST_RESULT_ADMIN
+    type: Display Only
+
+  label: 
+    label: Admin
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 80
+    region: Test Salary Change Approver Assignments # 578705714851149511
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: Test ========================================
+  id: 310060683497745295
+  identification: 
+    button-name: Test
+    label: Test
+
+  layout: 
+    sequence: 60
+    region: Test Salary Change Approver Assignments # 578705714851149511
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: 1
+    new-column: true
+    column-span: 1
+    alignment: Right
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+dynamic-actions: 
+- # ====== Dynamic Action: When Test Button Clicked ============
+  id: 310068027889745329
+  identification: 
+    name: When Test Button Clicked
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: Test # 310060683497745295
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 218946504073396354
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        apex.message.clearErrors();
+        let approver_missing = $v('P10_TEST_RESULT_APPROVER') === '';
+        let admin_missing = $v('P10_TEST_RESULT_ADMIN') === '';
+        let problems = [];
+        if (approver_missing) {
+            problems.push(
+                {
+                    "type" : "error",
+                    "location" : "page",
+                    "message": 'No salary change approver was available to assign (after excluding your username). Check Approver participant entries.'
+                }
+            ); 
+        }
+        if (admin_missing) {
+            problems.push(
+                {
+                    "type" : "error",
+                    "location" : "page",
+                    "message": 'No salary change admin was available to assign. Check Admin participant entries.'
+                }
+            );
+        }
+        if (problems.length > 0) {
+            apex.message.showErrors(problems);
+        }
+        
+
+    execution: 
+      sequence: 20
+      event: When Test Button Clicked # 310068027889745329
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 310068537880745332
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        eba_demo_appr.validate_admin_and_approver('SALARY_CHANGE',
+                                                  :P10_EMPNO,
+                                                  :P10_PROPOSED_SALARY,
+                                                  :P10_TEST_RESULT_ADMIN,
+                                                  :P10_TEST_RESULT_APPROVER);
+        
+      items-to-submit: 
+      - P10_EMPNO
+      - P10_PROPOSED_SALARY
+      items-to-return: 
+      - P10_TEST_RESULT_APPROVER
+      - P10_TEST_RESULT_ADMIN
+      suppress-change-event: false
+
+    execution: 
+      sequence: 10
+      event: When Test Button Clicked # 310068027889745329
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+

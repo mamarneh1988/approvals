@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+	<changeSet id="0538f9772f6d2f0cf9f838961ce61dadd0d8af64" author="(HR)-Generated" failOnError="false"   runOnChange="true" runAlways="false"  >
+		<n0:createOraclePackageSpec objectName="EBA_DEMO_APPR" objectType="PACKAGE_SPEC" ownerName="HR"  replaceIfExists="true" >
+			<n0:source><![CDATA[
+  CREATE OR REPLACE EDITIONABLE PACKAGE "HR"."EBA_DEMO_APPR" as
+    function get_approver_for(p_task_def_static_id varchar2, 
+                              p_empno number, 
+                              p_job varchar2, 
+                              p_proposed_sal number) return varchar2;
+    function get_admin_for(p_task_def_static_id varchar2, 
+                           p_empno number, 
+                           p_job varchar2, 
+                           p_proposed_sal number) return varchar2;    
+    function user_has_open_approvals return boolean;
+    function user_has_open_admin_tasks return boolean;
+    procedure validate_admin_and_approver(p_task_def_static_id varchar2, 
+                                          p_empno number, 
+                                          p_proposed_sal number,
+                                          p_admin out varchar2,
+                                          p_approver out varchar2);                                                                                          
+    function details_task_url(p_app_id number, p_task_id number, p_url varchar2)  return varchar2;
+    function approvers_for_task(p_task_id number) return varchar2;
+    function admins_for_task(p_task_id number) return varchar2;
+    function get_laptop_approver(p_renewal_count number) return varchar2;    
+end;
+]]></n0:source>
+		</n0:createOraclePackageSpec>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,426 @@
+---
+- # ====== Task Definition: Salary Change ======================
+  id: 297740972689777133
+  identification: 
+    name: Salary Change
+
+  settings: 
+    subject: Salary Change for &INITCAP_ENAME. from &SAL. to &P_NEW_SALARY.
+    priority: 3-Medium
+
+  deadline: 
+    due-on-type: Interval
+    interval: P7D
+
+  execution: 
+    expiration-policy: None
+
+  settings: 
+    details-page: 
+      url: 'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:RP,15:P15_TASK_ID:&TASK_ID.'
+      page: 15 # Salary Change Details
+      clear-cache: RP,15
+      values: 
+        p15_task_id: '&TASK_ID.'
+
+  source: 
+    table-owner: Parsing Schema
+    sql-query: |
+      select ename, sal, initcap(ename) as initcap_ename, job
+      from eba_demo_appr_emp where empno = :APEX$TASK_PK
+
+  advanced: 
+    static-id: SALARY_CHANGE
+
+  parameters: 
+  - # ====== Parameter: Proposed Salary ==========================
+    id: 297742956796787255
+    identification: 
+      static-id: P_NEW_SALARY
+
+    label: 
+      label: Proposed Salary
+
+    value: 
+      data-type: Number
+      required: true
+
+    advanced: 
+      show-on-task-details: true
+
+  actions: 
+  - # ====== Action: On Approve ==================================
+    id: 297743330151836129
+    identification: 
+      name: On Approve
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: |
+        insert into eba_demo_appr_sal_history(empno,old_sal,new_sal,task_id,approval_date) 
+        select empno, sal, :P_NEW_SALARY, :APEX$TASK_ID, sysdate from eba_demo_appr_emp where empno = :APEX$TASK_PK;
+        update eba_demo_appr_emp set sal = :P_NEW_SALARY where empno = :APEX$TASK_PK;
+        
+
+    execution: 
+      on-event: Complete
+      outcome: Approved
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 1
+
+    error: 
+      stop-execution-on-error: true
+
+  participants: 
+  - # ====== Participant: BUSINESS_ADMIN =========================
+    id: 297741365473787246
+    identification: 
+      type: Business Administrator
+
+    value: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: "eba_demo_appr.get_admin_for('SALARY_CHANGE', :APEX$TASK_PK, :JOB, :P_NEW_SALARY)"
+
+  - # ====== Participant: POTENTIAL_OWNER ========================
+    id: 297741742709787254
+    identification: 
+      type: Potential Owner
+
+    value: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: "eba_demo_appr.get_approver_for('SALARY_CHANGE', :APEX$TASK_PK, :JOB, :P_NEW_SALARY)"
+
+- # ====== Task Definition: Job Change =========================
+  id: 298543841855392967
+  identification: 
+    name: Job Change
+
+  settings: 
+    subject: Job Change for &INITCAP_ENAME. from &JOB. to &P_NEW_JOB.
+    priority: 3-Medium
+
+  deadline: 
+    due-on-type: Interval
+    interval: P2D
+
+  execution: 
+    expiration-policy: None
+
+  settings: 
+    details-page: 
+      url: 'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP,2:P2_TASK_ID:&TASK_ID.'
+      page: 2 # Task Details
+      clear-cache: RP,2
+      values: 
+        p2_task_id: '&TASK_ID.'
+
+  source: 
+    table-owner: Parsing Schema
+    sql-query: |
+      select ename, job, initcap(ename) as initcap_ename, 
+             apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') as demo_notification_email
+      from eba_demo_appr_emp where empno = :APEX$TASK_PK
+
+  advanced: 
+    static-id: JOB_CHANGE
+
+  parameters: 
+  - # ====== Parameter: New Job ==================================
+    id: 298545944535406913
+    identification: 
+      static-id: P_NEW_JOB
+
+    label: 
+      label: New Job
+
+    value: 
+      data-type: String
+      required: true
+
+    advanced: 
+      show-on-task-details: true
+
+  actions: 
+  - # ====== Action: Push Email Queue for Sample =================
+    id: 215764499161396706
+    identification: 
+      name: Push Email Queue for Sample
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: apex_mail.push_queue;
+
+    execution: 
+      on-event: Complete
+      outcome: Approved
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 30
+
+    error: 
+      stop-execution-on-error: true
+
+    server-side-condition: 
+      type: Item is NOT NULL
+      item: DEMO_NOTIFICATION_EMAIL
+
+  - # ====== Action: On Approve ==================================
+    id: 298546323605445647
+    identification: 
+      name: On Approve
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: 'update eba_demo_appr_emp set job = :P_NEW_JOB where empno = :APEX$TASK_PK;'
+
+    execution: 
+      on-event: Complete
+      outcome: Approved
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 10
+
+    error: 
+      stop-execution-on-error: true
+
+  - # ====== Action: Notify Employee =============================
+    id: 310941427132484154
+    identification: 
+      name: Notify Employee
+      type: Send E-Mail
+
+    settings: 
+      from: '&APP_EMAIL.'
+      to: '&DEMO_NOTIFICATION_EMAIL.'
+      email-template: Job Change Notification # 310944013143552178
+      placeholder-values: |
+        {
+            "P_JOB_BEFORE":"&JOB.",
+            "P_JOB_AFTER":"&P_NEW_JOB.",
+            "P_ENAME":"&ENAME."
+        }
+      send-immediately: false
+
+    execution: 
+      on-event: Complete
+      outcome: Approved
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 20
+
+    error: 
+      stop-execution-on-error: true
+
+    server-side-condition: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') is not null
+
+  participants: 
+  - # ====== Participant: POTENTIAL_OWNER ========================
+    id: 298544352393406910
+    identification: 
+      type: Potential Owner
+
+    value: 
+      type: Static Value
+      static-value: JANE
+
+  - # ====== Participant: POTENTIAL_OWNER ========================
+    id: 298544788962406911
+    identification: 
+      type: Potential Owner
+
+    value: 
+      type: Static Value
+      static-value: STEVE
+
+  - # ====== Participant: POTENTIAL_OWNER ========================
+    id: 298545171255406911
+    identification: 
+      type: Potential Owner
+
+    value: 
+      type: Static Value
+      static-value: BO
+
+  - # ====== Participant: BUSINESS_ADMIN =========================
+    id: 298545513828406912
+    identification: 
+      type: Business Administrator
+
+    value: 
+      type: Static Value
+      static-value: PAT
+
+- # ====== Task Definition: Laptop Request =====================
+  id: 353594115780845834
+  identification: 
+    name: Laptop Request
+
+  settings: 
+    subject: '&LAPTOP_TYPE. Laptop Request for &ENAME.'
+    priority: 3-Medium
+
+  deadline: 
+    due-on-type: Scheduler Expression
+    scheduler-expression: FREQ=MINUTELY;INTERVAL=2
+
+  execution: 
+    expiration-policy: Renew
+
+  deadline: 
+    maximum-renewal-count: 2
+
+  settings: 
+    details-page: 
+      url: 'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP,2:P2_TASK_ID:&TASK_ID.'
+      page: 2 # Task Details
+      clear-cache: RP,2
+      values: 
+        p2_task_id: '&TASK_ID.'
+
+  source: 
+    table-owner: Parsing Schema
+    sql-query: |
+      select ename,
+             case laptop_type when 'MAC' then 'MacBook Pro' when 'WIN' then 'Lenovo T490' end as laptop_type,
+             apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') as demo_notification_email 
+      from eba_demo_appr_laptop_requests lr
+      left outer join eba_demo_appr_emp e on e.empno = lr.empno
+      where lr.id = :APEX$TASK_PK
+
+  advanced: 
+    static-id: LAPTOP_REQUEST
+
+  actions: 
+  - # ====== Action: On Complete: Update Laptop Request Status ===
+    id: 362398715642414662
+    identification: 
+      name: 'On Complete: Update Laptop Request Status'
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: |
+        update eba_demo_appr_laptop_requests
+        set status = upper(:APEX$TASK_OUTCOME), decision_date = sysdate, approver = :APEX$TASK_OWNER
+        where id = :APEX$TASK_PK;
+
+    execution: 
+      on-event: Complete
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 20
+
+    error: 
+      stop-execution-on-error: true
+
+  - # ====== Action: Before Expire: Send Reminder Email to Approve
+    id: 362399519555476258
+    identification: 
+      name: 'Before Expire: Send Reminder Email to Approver'
+      type: Send E-Mail
+
+    settings: 
+      from: '&APP_EMAIL.'
+      to: '&DEMO_NOTIFICATION_EMAIL.'
+      subject: Laptop Request for &ENAME. Requires Your Review
+      body-plain-text: Hi &APEX$TASK_OWNER., please check your "My Approvals" inbox. The laptop request for &ENAME. requires your review and will expire shortly and be assigned to a colleague if you are unable to review it in a timely manner. Thanks for your kind attention to this matter.
+      body-html: |
+        <p>Hi &APEX$TASK_OWNER., please check your "My Approvals" inbox. The laptop request for &ENAME. requires your review 
+            and will expire shortly and be assigned to a colleague if you are unable to review it in a
+            timely manner. Thanks for your kind attention to this matter.</p>
+      send-immediately: false
+
+    execution: 
+      on-event: Before Expire
+      before-expiration-interval: PT1M
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 30
+
+    error: 
+      stop-execution-on-error: true
+
+    server-side-condition: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') is not null
+
+  - # ====== Action: Push Email Queue for Sample =================
+    id: 386192568333602820
+    identification: 
+      name: Push Email Queue for Sample
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: apex_mail.push_queue;
+
+    execution: 
+      on-event: Before Expire
+      before-expiration-interval: PT1M
+
+    error-handling: 
+      log-message-type: None
+
+    execution: 
+      sequence: 40
+
+    error: 
+      stop-execution-on-error: true
+
+    server-side-condition: 
+      type: Item is NOT NULL
+      item: DEMO_NOTIFICATION_EMAIL
+
+  participants: 
+  - # ====== Participant: POTENTIAL_OWNER ========================
+    id: 353594470064845838
+    identification: 
+      type: Potential Owner
+
+    value: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: 'eba_demo_appr.get_laptop_approver(:APEX$TASK_RENEWAL_COUNT)'
+
+  - # ====== Participant: BUSINESS_ADMIN =========================
+    id: 353594782344845839
+    identification: 
+      type: Business Administrator
+
+    value: 
+      type: Static Value
+      static-value: PAT
+

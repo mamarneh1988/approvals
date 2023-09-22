@@ -1,0 +1,25 @@
+---
+- # ====== Install Script: InstallSampleData ===================
+  id: 621645653461328
+  identification: 
+    name: InstallSampleData
+
+  execution: 
+    sequence: 15
+
+- # ====== Install Script: DropTables ==========================
+  id: 1024162065230315
+  identification: 
+    name: DropTables
+
+  execution: 
+    sequence: 1
+
+- # ====== Install Script: InstallSchemaObjects ================
+  id: 306454800185962442
+  identification: 
+    name: InstallSchemaObjects
+
+  execution: 
+    sequence: 10
+

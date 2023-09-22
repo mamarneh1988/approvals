@@ -1,0 +1,3869 @@
+---
+# ====== Page: Salary Change Details =========================
+id: 15
+identification: 
+  name: Salary Change Details
+  alias: SALARY-CHANGE-DETAILS
+  title: Salary Change Details
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Modal Dialog # 294267649979215811
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: No - Prevent page from being re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Subject =====================================
+  id: 1046616197141182371
+  identification: 
+    title: Subject
+    type: Dynamic Content
+
+  source: 
+    language: PL/SQL
+    pl/sql-function-body-returning-a-clob: |
+      declare
+          l_result clob;
+      begin
+          select to_clob(replace(replace(replace(replace(replace(replace('
+                  <div class="a-CardView has-title has-badge">
+                    <div class="a-CardView-header">
+                      <div class="a-CardView-headerBody">
+                        <h3 class="a-CardView-title">#SUBJECT#</h3>
+                      </div>
+                      <div class="a-CardView-badge #BADGE_CSS_CLASSES#" title="#BADGE_TEXT#">
+                        <span class="a-CardView-badgeValue">#BADGE_TEXT#</span>
+                      </div>
+                    </div>
+                    <div class="a-CardView-body">
+                      <div class="a-CardView-mainContent"> Assigned to #OWNER#, 
+                         Priority #PRIORITY#, Initiated by #INITIATOR#
+                      </div>
+                   </div>
+                 </div>',
+                 '#SUBJECT#'          , subject          ),
+                 '#BADGE_TEXT#'       , badge_text       ),
+                 '#BADGE_CSS_CLASSES#', badge_css_classes),
+                 '#OWNER#',actual_owner),
+                 '#PRIORITY#',priority),
+                 '#INITIATOR#',initiator ))
+            into l_result
+            from table ( apex_approval.get_tasks (
+                             p_context => 'SINGLE_TASK',
+                             p_task_id => :P15_TASK_ID ) );
+      
+          return l_result;
+      exception
+          when no_data_found then
+              return l_result;
+      end;
+
+  layout: 
+    sequence: 40
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard # 294343348039215884
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--hideHeader
+    - t-Region--noBorder
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    performance: 
+      lazy-loading: false
+
+- # ====== Region: Edit Task ===================================
+  id: 1046619801554182378
+  identification: 
+    title: Edit Task
+    type: Static Content
+
+  layout: 
+    sequence: 70
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Buttons Container # 294285750039215831
+    template-options: 
+    - '#DEFAULT#'
+    - t-ButtonRegion--noPadding
+    - t-ButtonRegion--noUI
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Delegate ====================================
+  id: 1046623704096182386
+  identification: 
+    title: Delegate
+    type: Static Content
+
+  layout: 
+    sequence: 80
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_DELEGATE_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_delegate )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Priority ====================================
+  id: 1046624973870182388
+  identification: 
+    title: Priority
+    type: Static Content
+
+  layout: 
+    sequence: 90
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_PRIORITY_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_set_priority )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Due =========================================
+  id: 1046626176247182390
+  identification: 
+    title: Due
+    type: Static Content
+
+  layout: 
+    sequence: 100
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_DUE_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_set_due_date )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Request Information =========================
+  id: 1046627375268182392
+  identification: 
+    title: Request Information
+    type: Static Content
+
+  layout: 
+    sequence: 110
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_REQUEST_INFORMATION_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_request_info )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Submit Information ==========================
+  id: 1046628508698182393
+  identification: 
+    title: Submit Information
+    type: Static Content
+
+  layout: 
+    sequence: 120
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_SUBMIT_INFORMATION_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_submit_info )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Invite Participant ==========================
+  id: 1046629783707182395
+  identification: 
+    title: Invite Participant
+    type: Static Content
+
+  layout: 
+    sequence: 130
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_INVITE_PARTICIPANT_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_add_owner )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Cancel Task =================================
+  id: 1046630910269182396
+  identification: 
+    title: Cancel Task
+    type: Static Content
+
+  source: 
+    html-code: |
+      <p>Do you really want to cancel this task?</p>
+      <p>This will mark the task as no longer needed.</p>
+
+  layout: 
+    sequence: 140
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Popup # 294333390995215878
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-popup-noOverlay
+    - js-popup-callout
+    - js-dialog-nosize
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    custom-attributes: 
+    - data-parent-element="#OPEN_CANCEL_TASK_DIALOG"
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_cancel )
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Comments ====================================
+  id: 1046632941656182398
+  identification: 
+    title: Comments
+    type: Classic Report
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select apex_string.get_initials(created_by) as user_icon,
+             'u-color-'||ora_hash(created_by,45)  as icon_modifier,
+             created_by                           as user_name,
+             text                                 as comment_text,
+             created_on                           as comment_date,
+             null                                 as comment_modifiers,
+             null                                 as actions,
+             null                                 as attribute_1,
+             null                                 as attribute_2,
+             null                                 as attribute_3,
+             null                                 as attribute_4,
+             case when task_id != :P15_TASK_ID
+                 then 'u-warning'
+                 else null
+             end                                  as column_css_class
+        from apex_task_comments
+       where :P15_ALL_COMMENTS = 'N' and task_id = :P15_TASK_ID
+          or :P15_ALL_COMMENTS = 'Y' and task_id in ( 
+                             select task_id 
+                               from apex_tasks
+                            connect by prior previous_task_id = task_id
+                              start with task_id = :P15_TASK_ID )
+    page-items-to-submit: 
+    - P15_TASK_ID
+    - P15_ALL_COMMENTS
+
+  layout: 
+    sequence: 170
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Below Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    layout: 
+      number-of-rows-type: Static Value
+      number-of-rows: 1000
+
+    appearance: 
+      template-type: Theme
+      template: Comments # 294372608401215911
+      template-options: 
+      - '#DEFAULT#'
+      - t-Comments--chat
+      - t-Report--hideNoPagination
+
+    pagination: 
+      type: No Pagination (Show All Rows)
+      partial-page-refresh: true
+
+    performance: 
+      lazy-loading: false
+
+    break-formatting: 
+      break-columns: No Break
+
+    advanced: 
+      strip-html: false
+      sort-nulls: Last
+
+    heading: 
+      type: Custom Headings
+
+    download: 
+      csv-export-enabled: false
+
+    printing: 
+      enabled: false
+
+  columns: 
+  - # ====== Column: USER_ICON ===================================
+    id: 365499774706725835
+    identification: 
+      column-name: USER_ICON
+      type: Plain Text
+
+    heading: 
+      heading: User Icon
+      alignment: center
+
+    layout: 
+      sequence: 10
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ACTIONS =====================================
+    id: 365500244076725836
+    identification: 
+      column-name: ACTIONS
+      type: Plain Text
+
+    heading: 
+      heading: Actions
+      alignment: center
+
+    layout: 
+      sequence: 70
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ATTRIBUTE_1 =================================
+    id: 365500624299725836
+    identification: 
+      column-name: ATTRIBUTE_1
+      type: Plain Text
+
+    heading: 
+      heading: Attribute 1
+      alignment: center
+
+    layout: 
+      sequence: 80
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ATTRIBUTE_2 =================================
+    id: 365500981286725836
+    identification: 
+      column-name: ATTRIBUTE_2
+      type: Plain Text
+
+    heading: 
+      heading: Attribute 2
+      alignment: center
+
+    layout: 
+      sequence: 90
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ATTRIBUTE_3 =================================
+    id: 365501392104725837
+    identification: 
+      column-name: ATTRIBUTE_3
+      type: Plain Text
+
+    heading: 
+      heading: Attribute 3
+      alignment: center
+
+    layout: 
+      sequence: 100
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ATTRIBUTE_4 =================================
+    id: 365501831045725837
+    identification: 
+      column-name: ATTRIBUTE_4
+      type: Plain Text
+
+    heading: 
+      heading: Attribute 4
+      alignment: center
+
+    layout: 
+      sequence: 110
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: COLUMN_CSS_CLASS ============================
+    id: 365502218908725837
+    identification: 
+      column-name: COLUMN_CSS_CLASS
+      type: Plain Text
+
+    heading: 
+      heading: Column Css Class
+      alignment: center
+
+    layout: 
+      sequence: 120
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: COMMENT_DATE ================================
+    id: 365502660792725838
+    identification: 
+      column-name: COMMENT_DATE
+      type: Plain Text
+
+    heading: 
+      heading: Comment Date
+      alignment: center
+
+    layout: 
+      sequence: 50
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: true
+
+    appearance: 
+      format-mask: SINCE
+
+    sorting: 
+      default-sequence: 1
+      direction: Ascending
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: COMMENT_MODIFIERS ===========================
+    id: 365503050864725838
+    identification: 
+      column-name: COMMENT_MODIFIERS
+      type: Plain Text
+
+    heading: 
+      heading: Comment Modifiers
+      alignment: center
+
+    layout: 
+      sequence: 60
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: ICON_MODIFIER ===============================
+    id: 365503385040725839
+    identification: 
+      column-name: ICON_MODIFIER
+      type: Plain Text
+
+    heading: 
+      heading: Icon Modifier
+      alignment: center
+
+    layout: 
+      sequence: 20
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: USER_NAME ===================================
+    id: 365503865952725839
+    identification: 
+      column-name: USER_NAME
+      type: Plain Text
+
+    heading: 
+      heading: User Name
+      alignment: center
+
+    layout: 
+      sequence: 30
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: true
+
+    column-formatting: 
+      html-expression: '<span style="text-transform:lowercase">#USER_NAME#</span>'
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: COMMENT_TEXT ================================
+    id: 365504227930725840
+    identification: 
+      column-name: COMMENT_TEXT
+      type: Plain Text
+
+    heading: 
+      heading: Comment Text
+      alignment: center
+
+    layout: 
+      sequence: 40
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    column-formatting: 
+      css-classes: 
+      - '#COLUMN_CSS_CLASS#'
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+- # ====== Region: History =====================================
+  id: 1046639350881182406
+  identification: 
+    title: History
+    type: Static Content
+
+  layout: 
+    sequence: 180
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Collapsible # 294301809631215843
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - js-useLocalStorage
+    - is-collapsed
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: History =====================================
+  id: 1046640182531182407
+  identification: 
+    title: History
+    type: Classic Report
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select event_type,
+             event_timestamp,
+             event_creator_lower,
+             display_msg
+        from table ( apex_approval.get_task_history (
+                         p_task_id     => :P15_TASK_ID,
+                         p_include_all => :P15_ALL_HISTORY ) )
+    page-items-to-submit: 
+    - P15_TASK_ID
+    - P15_ALL_HISTORY
+
+  layout: 
+    sequence: 20
+    parent-region: History # 1046639350881182406
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Collapsible # 294301809631215843
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--noBorder
+    - t-Region--scrollBody
+    - margin-top-none
+    - margin-bottom-none
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    layout: 
+      number-of-rows-type: Static Value
+      number-of-rows: 20
+
+    appearance: 
+      template-type: Theme
+      template: Standard # 294381220381215917
+      template-options: 
+      - '#DEFAULT#'
+      - t-Report--stretch
+      - t-Report--staticRowColors
+      - t-Report--rowHighlight
+      - t-Report--inline
+      - t-Report--hideNoPagination
+
+    pagination: 
+      type: Row Ranges X to Y (with next and previous links)
+      display-position: Bottom - Left
+      partial-page-refresh: true
+
+    performance: 
+      lazy-loading: false
+
+    break-formatting: 
+      break-columns: No Break
+
+    advanced: 
+      strip-html: false
+      sort-nulls: Last
+
+    heading: 
+      type: Custom Headings
+
+    download: 
+      csv-export-enabled: false
+
+    printing: 
+      enabled: false
+
+  columns: 
+  - # ====== Column: EVENT_TYPE ==================================
+    id: 365506857925725844
+    identification: 
+      column-name: EVENT_TYPE
+      type: Plain Text
+
+    heading: 
+      heading: Event
+      alignment: center
+
+    layout: 
+      sequence: 10
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: true
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: EVENT_TIMESTAMP =============================
+    id: 365507207148725845
+    identification: 
+      column-name: EVENT_TIMESTAMP
+      type: Plain Text
+
+    heading: 
+      heading: 'Time '
+      alignment: center
+
+    layout: 
+      sequence: 20
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: true
+
+    appearance: 
+      format-mask: SINCE
+
+    sorting: 
+      default-sequence: 1
+      direction: Ascending
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: EVENT_CREATOR_LOWER =========================
+    id: 365507573927725845
+    identification: 
+      column-name: EVENT_CREATOR_LOWER
+      type: Plain Text
+
+    heading: 
+      heading: User
+      alignment: center
+
+    layout: 
+      sequence: 30
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: DISPLAY_MSG =================================
+    id: 365508035745725845
+    identification: 
+      column-name: DISPLAY_MSG
+      type: Plain Text
+
+    heading: 
+      heading: Message
+      alignment: center
+
+    layout: 
+      sequence: 40
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: false
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+- # ====== Region: Buttons =====================================
+  id: 1046642035375182410
+  identification: 
+    title: Buttons
+    type: Static Content
+
+  layout: 
+    sequence: 200
+    parent-region: No Parent
+    position: REGION_POSITION_03
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Buttons Container # 294285750039215831
+    template-options: 
+    - '#DEFAULT#'
+    - t-ButtonRegion--stickToBottom
+    - t-ButtonRegion--slimPadding
+    - margin-bottom-none
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Salary Increment ============================
+  id: 1357054825569451480
+  identification: 
+    title: Salary Increment
+    type: Classic Report
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select case
+               when t.state_code='COMPLETED' and s.old_sal is not null then
+                   to_char(round((s.new_sal - s.old_sal) / s.old_sal, 3)*100,'S99999.9')
+               else
+                  to_char(round((to_number(p.param_value) - e.sal) / e.sal, 3)*100,'S99999.9')
+             end
+             ||'%' percent_change
+      from apex_tasks t
+      left join eba_demo_appr_emp e on e.empno = to_number(t.detail_pk)
+      left join apex_task_parameters p on p.task_id = t.task_id and p.param_static_id = 'P_NEW_SALARY'
+      left outer join eba_demo_appr_sal_history s on s.task_id = t.task_id 
+      where t.task_id = :P15_TASK_ID
+
+  layout: 
+    sequence: 60
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 4
+
+  appearance: 
+    template: Blank with Attributes (No Grid) # 294284314976215830
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    layout: 
+      number-of-rows-type: Static Value
+      number-of-rows: 15
+
+    appearance: 
+      template-type: Theme
+      template: Badge List # 294363294249215902
+      template-options: 
+      - '#DEFAULT#'
+      - t-BadgeList--large
+      - t-BadgeList--dash
+      - t-BadgeList--stacked
+      - t-Report--hideNoPagination
+
+    pagination: 
+      type: Row Ranges X to Y (with next and previous links)
+      display-position: Bottom - Right
+      partial-page-refresh: true
+
+    performance: 
+      lazy-loading: false
+
+    break-formatting: 
+      break-columns: No Break
+
+    advanced: 
+      strip-html: false
+      sort-nulls: Last
+
+    heading: 
+      type: Custom Headings
+
+    download: 
+      csv-export-enabled: false
+
+    printing: 
+      enabled: false
+
+  columns: 
+  - # ====== Column: PERCENT_CHANGE ==============================
+    id: 365510617638725848
+    identification: 
+      column-name: PERCENT_CHANGE
+      type: Plain Text
+
+    heading: 
+      heading: Percent Change
+      alignment: center
+
+    layout: 
+      sequence: 10
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+- # ====== Region: About this page =============================
+  id: 2118075359083543576
+  identification: 
+    title: About this page
+    type: Static Content
+
+  source: 
+    html-code: <p>This page shows detailed information about the Salary Change task whose id is passed in <strong>P15_TASK_ID</strong>. It was created by clicking on the <strong>Create Task Details Page</strong> button on the task definition edit page in the APEX Builder, and then enhanced to have additional <strong>Salary Increment</strong> and <strong>Salary History</strong> regions to provide the approver with additional, task-specific context. The <strong>Task Details</strong> page shows an example of a generic task details page.</p>
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Collapsible # 294301809631215843
+    template-options: 
+    - '#DEFAULT#'
+    - is-collapsed
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Salary History ==============================
+  id: 3812696109596644678
+  identification: 
+    title: Salary History
+    type: Chart
+
+  source: 
+    page-items-to-submit: 
+    - P15_TASK_ID
+
+  layout: 
+    sequence: 160
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    - margin-top-lg
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  security: 
+    escape-special-characters: true
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 365511285608725849
+    chart: 
+      type: Line
+
+    appearance: 
+      orientation: Vertical
+      stack: false
+
+    layout: 
+      height: 300
+
+    data-cursor: 
+      cursor: Automatic
+      behavior: Automatic
+      dim-on-hover: true
+
+    multi-series-chart-data: 
+      fill-gaps-in-chart-data: true
+      sort-order: Label - Ascending
+      render-gap-as-zero: true
+
+    settings: 
+      zoom-and-scroll: No
+
+    animation: 
+      on-display: Automatic
+      on-data-change: Automatic
+
+    tooltip: 
+      show: true
+      show-series-name: true
+      show-group-name: true
+      show-value: true
+
+    legend: 
+      show: false
+
+    series: 
+    - # ====== Series: Salary History ==============================
+      id: 365513008855725854
+      identification: 
+        name: Salary History
+
+      execution: 
+        sequence: 10
+
+      source: 
+        location: Local Database
+        type: SQL Query
+        sql-query: |
+          with emp as (
+              select e.empno,e.hiredate
+                  from apex_tasks t
+                  left join eba_demo_appr_emp e on e.empno = to_number(t.detail_pk)
+                  where t.task_id = :P15_TASK_ID
+          ),
+          years as
+          (
+              select level as offset
+              from dual
+              connect by level <= (select to_number(to_char(sysdate,'YYYY'))-to_number(to_char(e.hiredate,'YYYY'))
+                  from eba_demo_appr_emp e
+                  left join apex_tasks t on e.empno = to_number(t.detail_pk)
+                  where t.task_id = :P15_TASK_ID)
+          )
+          select to_number(to_char(emp.hiredate,'YYYY'))+years.offset as year, max(h.new_sal) as salary
+          from years, emp, eba_demo_appr_sal_history h
+          where to_number(to_char(emp.hiredate,'YYYY'))+years.offset >= to_number(to_char(h.approval_date,'YYYY'))
+          and h.empno = emp.empno
+          group by to_number(to_char(emp.hiredate,'YYYY'))+years.offset
+          order by to_number(to_char(emp.hiredate,'YYYY'))+years.offset 
+
+      column-mapping: 
+        label: YEAR
+        value: SALARY
+
+      appearance: 
+        assigned-to-y2-axis: false
+
+      line: 
+        style: Solid
+        type: Automatic
+
+      marker: 
+        show: Automatic
+        shape: Automatic
+
+      label: 
+        show: false
+
+    axes: 
+    - # ====== Axis: y =============================================
+      id: 365511799093725851
+      identification: 
+        name: y
+        show-axis: true
+
+      value: 
+        format: Decimal
+        decimal-places: 0
+        format-scaling: None
+        baseline-scaling: Zero
+        scale: Linear
+
+      appearance: 
+        position: Automatic
+
+      major-ticks: 
+        show: Yes
+
+      minor-ticks: 
+        show: false
+
+      tick-label: 
+        show: true
+
+    - # ====== Axis: x =============================================
+      id: 365512402711725852
+      identification: 
+        name: x
+        show-axis: true
+
+      value: 
+        format: Date - Short
+        format-scaling: None
+        baseline-scaling: Minimum
+        scale: Linear
+        step: 1
+
+      major-ticks: 
+        show: Yes
+
+      minor-ticks: 
+        show: false
+
+      tick-label: 
+        show: true
+        rotation: true
+        position: Outside
+
+page-items: 
+- # ====== Page Item: P15_NEW_PRIORITY =========================
+  id: 365488807531725819
+  identification: 
+    name: P15_NEW_PRIORITY
+    type: Radio Group
+
+  label: 
+    label: New Priority
+    alignment: Left
+
+  settings: 
+    number-of-columns: 1
+    page-action-on-selection: None
+
+  layout: 
+    sequence: 10
+    region: Priority # 1046624973870182388
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Shared Component
+    list-of-values: UNIFIED_TASK_LIST.LOV.PRIORITY # 217577116867315738
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: SQL Query (return single value)
+    sql-query: |
+      select priority
+        from apex_tasks
+       where task_id = :P15_TASK_ID
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    escape-special-characters: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_NEW_DUE_DATE =========================
+  id: 365489890992725824
+  identification: 
+    name: P15_NEW_DUE_DATE
+    type: Date Picker
+
+  label: 
+    label: New Due Date
+    alignment: Left
+
+  settings: 
+    show-time: true
+    display-as: Inline
+    minimum-date: None
+    maximum-date: None
+    multiple-months: No
+    use-defaults: false
+    appearance-&-behavior: 'MONTH-PICKER:YEAR-PICKER:CLEAR-BUTTON'
+    days-outside-month: Visible
+    time-increment: 5
+    show-on: Item Focus
+
+  layout: 
+    sequence: 10
+    region: Due # 1046626176247182390
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 'YYYY-MM-DD HH24:MI'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: SQL Query (return single value)
+    sql-query: |
+      select to_char(due_on, 'YYYY-MM-DD HH24:MI')
+        from apex_tasks
+       where task_id = :P15_TASK_ID
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_REQUEST_TEXT =========================
+  id: 365490982153725825
+  identification: 
+    name: P15_REQUEST_TEXT
+    type: Textarea
+
+  label: 
+    label: Message
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: true
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 10
+    region: Request Information # 1046627375268182392
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+    height: 5
+
+  validation: 
+    value-required: false
+    maximum-length: 4000
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_SUBMIT_TEXT ==========================
+  id: 365492123060725827
+  identification: 
+    name: P15_SUBMIT_TEXT
+    type: Textarea
+
+  label: 
+    label: Message
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: true
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 10
+    region: Submit Information # 1046628508698182393
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+    height: 5
+
+  validation: 
+    value-required: false
+    maximum-length: 4000
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_NEW_POTENTIAL_OWNER ==================
+  id: 365493237067725828
+  identification: 
+    name: P15_NEW_POTENTIAL_OWNER
+    type: Text Field
+
+  label: 
+    label: New Potential Owner
+    alignment: Left
+
+  settings: 
+    subtype: Text
+    trim-spaces: Leading and Trailing
+    text-case: NO CHANGE
+    submit-when-enter-pressed: false
+    disabled: false
+
+  layout: 
+    sequence: 10
+    region: Invite Participant # 1046629783707182395
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating # 294415066504215959
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+    maximum-length: 100
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_NEW_OWNER ============================
+  id: 365499225934725834
+  identification: 
+    name: P15_NEW_OWNER
+    type: Select List
+
+  label: 
+    label: New Owner
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 10
+    region: Delegate # 1046623704096182386
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select disp,
+             val
+        from table ( apex_approval.get_task_delegates ( p_task_id => :P15_TASK_ID ) )
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_ALL_COMMENTS =========================
+  id: 365504987907725841
+  identification: 
+    name: P15_ALL_COMMENTS
+    type: Checkbox
+
+  label: 
+    label: Include comments from expired tasks
+    alignment: Left
+
+  settings: 
+    use-defaults: false
+    checked-value: Y
+    unchecked-value: N
+
+  layout: 
+    sequence: 10
+    region: Comments # 1046632941656182398
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Optional # 294413591684215956
+    template-options: 
+    - '#DEFAULT#'
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Static Value
+    static-value: N
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  server-side-condition: 
+    type: Rows returned
+    sql-query: |
+      select task_id 
+        from apex_tasks
+       where task_id = :P15_TASK_ID
+         and previous_task_id is not null
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_COMMENT_TEXT =========================
+  id: 365505450890725842
+  identification: 
+    name: P15_COMMENT_TEXT
+    type: Textarea
+
+  label: 
+    label: Comment
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: true
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 20
+    region: Comments # 1046632941656182398
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    - t-Form-fieldContainer--stretchInputs
+    width: 30
+    height: 3
+
+  validation: 
+    value-required: false
+    maximum-length: 2000
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_ALL_HISTORY ==========================
+  id: 365506080088725843
+  identification: 
+    name: P15_ALL_HISTORY
+    type: Checkbox
+
+  label: 
+    label: Include history from expired tasks
+    alignment: Left
+
+  settings: 
+    use-defaults: false
+    checked-value: Y
+    unchecked-value: N
+
+  layout: 
+    sequence: 10
+    region: History # 1046639350881182406
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Optional # 294413591684215956
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-sm
+    - margin-bottom-sm
+    - margin-left-sm
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Static Value
+    static-value: N
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  server-side-condition: 
+    type: Rows returned
+    sql-query: |
+      select task_id 
+        from apex_tasks
+       where task_id = :P15_TASK_ID
+         and previous_task_id is not null
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_TASK_ID ==============================
+  id: 365513972035725858
+  identification: 
+    name: P15_TASK_ID
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 20
+    region: No Parent
+    position: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P15_SUCCESS_MESSAGE ======================
+  id: 365514283177725859
+  identification: 
+    name: P15_SUCCESS_MESSAGE
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    position: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: SET_PRIORITY ================================
+  id: 365488455220725813
+  identification: 
+    button-name: SET_PRIORITY
+    label: Change Priority
+
+  layout: 
+    sequence: 20
+    region: Priority # 1046624973870182388
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: SET_DUE =====================================
+  id: 365489559712725823
+  identification: 
+    button-name: SET_DUE
+    label: Change Due Date
+
+  layout: 
+    sequence: 20
+    region: Due # 1046626176247182390
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: REQUEST_INFORMATION =========================
+  id: 365490655530725825
+  identification: 
+    button-name: REQUEST_INFORMATION
+    label: Request Information
+
+  layout: 
+    sequence: 20
+    region: Request Information # 1046627375268182392
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: SUBMIT_INFORMATION ==========================
+  id: 365491699110725826
+  identification: 
+    button-name: SUBMIT_INFORMATION
+    label: Submit Information
+
+  layout: 
+    sequence: 20
+    region: Submit Information # 1046628508698182393
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: INVITE_PARTICIPANT ==========================
+  id: 365492802204725827
+  identification: 
+    button-name: INVITE_PARTICIPANT
+    label: Invite Participant
+
+  layout: 
+    sequence: 20
+    region: Invite Participant # 1046629783707182395
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: CANCEL_TASK =================================
+  id: 365493968999725828
+  identification: 
+    button-name: CANCEL_TASK
+    label: Cancel Task
+
+  layout: 
+    sequence: 20
+    region: Cancel Task # 1046630910269182396
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-danger
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: RELEASE =====================================
+  id: 365494963122725830
+  identification: 
+    button-name: RELEASE
+    label: Release
+
+  layout: 
+    sequence: 10
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+  advanced: 
+    static-id: RELEASE
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_release )
+
+- # ====== Button: OPEN_DELEGATE_DIALOG ========================
+  id: 365495312493725830
+  identification: 
+    button-name: OPEN_DELEGATE_DIALOG
+    label: Delegate
+
+  layout: 
+    sequence: 20
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_DELEGATE_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_delegate )
+
+- # ====== Button: OPEN_PRIORITY_DIALOG ========================
+  id: 365495767559725830
+  identification: 
+    button-name: OPEN_PRIORITY_DIALOG
+    label: Change Priority
+
+  layout: 
+    sequence: 30
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_PRIORITY_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_set_priority )
+
+- # ====== Button: OPEN_DUE_DIALOG =============================
+  id: 365496105368725831
+  identification: 
+    button-name: OPEN_DUE_DIALOG
+    label: Change Due Date
+
+  layout: 
+    sequence: 40
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_DUE_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_set_due_date )
+
+- # ====== Button: OPEN_REQUEST_INFORMATION_DIALOG =============
+  id: 365496521121725831
+  identification: 
+    button-name: OPEN_REQUEST_INFORMATION_DIALOG
+    label: Request Information
+
+  layout: 
+    sequence: 50
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_REQUEST_INFORMATION_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_request_info )
+
+- # ====== Button: OPEN_SUBMIT_INFORMATION_DIALOG ==============
+  id: 365496927633725831
+  identification: 
+    button-name: OPEN_SUBMIT_INFORMATION_DIALOG
+    label: Submit Information
+
+  layout: 
+    sequence: 60
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_SUBMIT_INFORMATION_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_submit_info )
+
+- # ====== Button: OPEN_INVITE_PARTICIPANT_DIALOG ==============
+  id: 365497339792725832
+  identification: 
+    button-name: OPEN_INVITE_PARTICIPANT_DIALOG
+    label: Invite Participant
+
+  layout: 
+    sequence: 70
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_INVITE_PARTICIPANT_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_add_owner )
+
+- # ====== Button: OPEN_CANCEL_TASK_DIALOG =====================
+  id: 365497722743725832
+  identification: 
+    button-name: OPEN_CANCEL_TASK_DIALOG
+    label: Cancel Task
+
+  layout: 
+    sequence: 80
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: OPEN_CANCEL_TASK_DIALOG
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_cancel )
+
+- # ====== Button: RENEW =======================================
+  id: 365498089306725832
+  identification: 
+    button-name: RENEW
+    label: Renew Task
+
+  layout: 
+    sequence: 90
+    region: Edit Task # 1046619801554182378
+    position: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullLeft
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+  advanced: 
+    static-id: RENEW
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_renew )
+
+- # ====== Button: DELEGATE ====================================
+  id: 365498865129725833
+  identification: 
+    button-name: DELEGATE
+    label: Delegate
+
+  layout: 
+    sequence: 20
+    region: Delegate # 1046623704096182386
+    position: EDIT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+- # ====== Button: ADD_COMMENT =================================
+  id: 365504664314725840
+  identification: 
+    button-name: ADD_COMMENT
+    label: Add Comment
+
+  layout: 
+    sequence: 30
+    region: Comments # 1046632941656182398
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    alignment: Right
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+- # ====== Button: APPROVE =====================================
+  id: 365508692212725846
+  identification: 
+    button-name: APPROVE
+    label: Approve
+
+  layout: 
+    sequence: 40
+    region: Buttons # 1046642035375182410
+    position: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon # 294416361110215964
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--success
+    - t-Button--iconLeft
+    icon: fa-check
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_approve )
+
+- # ====== Button: CANCEL ======================================
+  id: 365509138818725847
+  identification: 
+    button-name: CANCEL
+    label: Cancel
+
+  layout: 
+    sequence: 10
+    region: Buttons # 1046642035375182410
+    position: CLOSE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: false
+
+- # ====== Button: CLAIM =======================================
+  id: 365509572796725847
+  identification: 
+    button-name: CLAIM
+    label: Claim Task
+
+  layout: 
+    sequence: 10
+    region: Buttons # 1046642035375182410
+    position: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_claim )
+
+- # ====== Button: REJECT ======================================
+  id: 365509877080725847
+  identification: 
+    button-name: REJECT
+    label: Reject
+
+  layout: 
+    sequence: 30
+    region: Buttons # 1046642035375182410
+    position: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon # 294416361110215964
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--danger
+    - t-Button--link
+    - t-Button--iconLeft
+    icon: fa-times-circle-o
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: |
+      apex_approval.is_allowed (
+          p_task_id   => :P15_TASK_ID,
+          p_operation => apex_approval.c_task_op_reject )
+
+dynamic-actions: 
+- # ====== Dynamic Action: Delegate ============================
+  id: 365520737126725869
+  identification: 
+    name: Delegate
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_DELEGATE_DIALOG # 365495312493725830
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365521248818725871
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Delegate # 1046623704096182386
+
+    execution: 
+      sequence: 10
+      event: Delegate # 365520737126725869
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Change Priority =====================
+  id: 365521626451725872
+  identification: 
+    name: Change Priority
+
+  execution: 
+    sequence: 20
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_PRIORITY_DIALOG # 365495767559725830
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365522152344725872
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Priority # 1046624973870182388
+
+    execution: 
+      sequence: 10
+      event: Change Priority # 365521626451725872
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Change Due Date =====================
+  id: 365522554705725873
+  identification: 
+    name: Change Due Date
+
+  execution: 
+    sequence: 30
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_DUE_DIALOG # 365496105368725831
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365523033773725874
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Due # 1046626176247182390
+
+    execution: 
+      sequence: 10
+      event: Change Due Date # 365522554705725873
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Request Information =================
+  id: 365523466404725874
+  identification: 
+    name: Request Information
+
+  execution: 
+    sequence: 40
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_REQUEST_INFORMATION_DIALOG # 365496521121725831
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365523913561725874
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Request Information # 1046627375268182392
+
+    execution: 
+      sequence: 10
+      event: Request Information # 365523466404725874
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Submit Information ==================
+  id: 365524309626725874
+  identification: 
+    name: Submit Information
+
+  execution: 
+    sequence: 50
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_SUBMIT_INFORMATION_DIALOG # 365496927633725831
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365524785959725875
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Submit Information # 1046628508698182393
+
+    execution: 
+      sequence: 10
+      event: Submit Information # 365524309626725874
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Invite Participant ==================
+  id: 365525196729725875
+  identification: 
+    name: Invite Participant
+
+  execution: 
+    sequence: 60
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_INVITE_PARTICIPANT_DIALOG # 365497339792725832
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365525691608725875
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Invite Participant # 1046629783707182395
+
+    execution: 
+      sequence: 10
+      event: Invite Participant # 365525196729725875
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Open Cancel Task Dialog =============
+  id: 365526092971725876
+  identification: 
+    name: Open Cancel Task Dialog
+
+  execution: 
+    sequence: 70
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: OPEN_CANCEL_TASK_DIALOG # 365497722743725832
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 365526608130725876
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Cancel Task # 1046630910269182396
+
+    execution: 
+      sequence: 10
+      event: Open Cancel Task Dialog # 365526092971725876
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Refresh - Comments ==================
+  id: 365526977069725876
+  identification: 
+    name: Refresh - Comments
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CHANGE
+    selection-type: Item(s)
+    item(s): 
+    - P15_ALL_COMMENTS
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 365527562785725877
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: Comments # 1046632941656182398
+
+    execution: 
+      sequence: 10
+      event: Refresh - Comments # 365526977069725876
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Refresh - History ===================
+  id: 365527878659725877
+  identification: 
+    name: Refresh - History
+
+  execution: 
+    sequence: 20
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CHANGE
+    selection-type: Item(s)
+    item(s): 
+    - P15_ALL_HISTORY
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 365528459211725877
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: History # 1046640182531182407
+
+    execution: 
+      sequence: 10
+      event: Refresh - History # 365527878659725877
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Add Comment =========================
+  id: 365528830283725878
+  identification: 
+    name: Add Comment
+
+  execution: 
+    sequence: 210
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: ADD_COMMENT # 365504664314725840
+
+  client-side-condition: 
+    type: Item is not null
+    item: P15_COMMENT_TEXT
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Execute Server-side Code ====================
+    id: 365529305583725878
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        apex_approval.add_task_comment(
+            p_task_id => :P15_TASK_ID,
+            p_text    => :P15_COMMENT_TEXT);
+      items-to-submit: 
+      - P15_TASK_ID
+      - P15_COMMENT_TEXT
+
+    execution: 
+      sequence: 10
+      event: Add Comment # 365528830283725878
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Refresh =====================================
+    id: 365529860458725879
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: Comments # 1046632941656182398
+
+    execution: 
+      sequence: 20
+      event: Add Comment # 365528830283725878
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Clear =======================================
+    id: 365530277415725879
+    identification: 
+      action: Clear
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P15_COMMENT_TEXT
+
+    execution: 
+      sequence: 30
+      event: Add Comment # 365528830283725878
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Set Focus ===================================
+    id: 365530817517725879
+    identification: 
+      action: Set Focus
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P15_COMMENT_TEXT
+
+    execution: 
+      sequence: 40
+      event: Add Comment # 365528830283725878
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+  - # ====== Action: Refresh =====================================
+    id: 365531320732725880
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: History # 1046640182531182407
+
+    execution: 
+      sequence: 50
+      event: Add Comment # 365528830283725878
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Cancel ==============================
+  id: 365531772987725880
+  identification: 
+    name: Cancel
+
+  execution: 
+    sequence: 220
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: CANCEL # 365509138818725847
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Cancel Dialog ===============================
+    id: 365532228940725880
+    identification: 
+      action: Cancel Dialog
+
+    execution: 
+      sequence: 10
+      event: Cancel # 365531772987725880
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+validations: 
+- # ====== Validation: Invite Participant ======================
+  id: 365514786716725861
+  identification: 
+    name: Invite Participant
+
+  execution: 
+    sequence: 10
+
+  validation: 
+    type: Item is NOT NULL
+    item: P15_NEW_POTENTIAL_OWNER
+    always-execute: false
+
+  error: 
+    error-message: Please provide a new potential owner
+    display-location: Inline with Field
+    associated-item: P15_NEW_POTENTIAL_OWNER # 365493237067725828
+
+  server-side-condition: 
+    when-button-pressed: INVITE_PARTICIPANT # 365492802204725827
+
+processes: 
+- # ====== Process: Claim ======================================
+  id: 365515138883725862
+  identification: 
+    name: Claim
+    type: Human Task - Manage
+
+  settings: 
+    type: Claim
+    task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CLAIM # 365509572796725847
+
+- # ====== Process: Approve ====================================
+  id: 365515561522725863
+  identification: 
+    name: Approve
+    type: Human Task - Manage
+
+  settings: 
+    type: Approve
+    task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task approved
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: APPROVE # 365508692212725846
+
+- # ====== Process: Reject =====================================
+  id: 365515947464725864
+  identification: 
+    name: Reject
+    type: Human Task - Manage
+
+  settings: 
+    type: Reject
+    task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 30
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task rejected
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: REJECT # 365509877080725847
+
+- # ====== Process: Release ====================================
+  id: 365516353003725864
+  identification: 
+    name: Release
+    type: Human Task - Manage
+
+  settings: 
+    type: Release
+    task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 40
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task released - can now be claimed by others
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: RELEASE # 365494963122725830
+
+- # ====== Process: Delegate ===================================
+  id: 365516736248725865
+  identification: 
+    name: Delegate
+    type: Human Task - Manage
+
+  settings: 
+    type: Delegate
+    task-id-item: P15_TASK_ID
+    to-user-item: P15_NEW_OWNER
+
+  execution: 
+    sequence: 50
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task delegated to &P15_NEW_OWNER!HTML.
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: DELEGATE # 365498865129725833
+
+- # ====== Process: Change Priority ============================
+  id: 365517144550725865
+  identification: 
+    name: Change Priority
+    type: Human Task - Manage
+
+  settings: 
+    type: Set Priority
+    task-id-item: P15_TASK_ID
+    priority-item: P15_NEW_PRIORITY
+
+  execution: 
+    sequence: 60
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task priority changed
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: SET_PRIORITY # 365488455220725813
+
+- # ====== Process: Change Due Date ============================
+  id: 365517486505725865
+  identification: 
+    name: Change Due Date
+    type: Human Task - Manage
+
+  settings: 
+    type: Set Due Date
+    task-id-item: P15_TASK_ID
+    due-date-item: P15_NEW_DUE_DATE
+
+  execution: 
+    sequence: 70
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task due date updated
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: SET_DUE # 365489559712725823
+
+- # ====== Process: Request Information ========================
+  id: 365517884554725866
+  identification: 
+    name: Request Information
+    type: Human Task - Manage
+
+  settings: 
+    type: Request Information
+    task-id-item: P15_TASK_ID
+    comment-text: '&P15_REQUEST_TEXT.'
+
+  execution: 
+    sequence: 80
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Information requested
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: REQUEST_INFORMATION # 365490655530725825
+
+- # ====== Process: Submit Information =========================
+  id: 365518276836725866
+  identification: 
+    name: Submit Information
+    type: Human Task - Manage
+
+  settings: 
+    type: Submit Information
+    task-id-item: P15_TASK_ID
+    comment-text: '&P15_SUBMIT_TEXT.'
+
+  execution: 
+    sequence: 90
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Information submitted
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: SUBMIT_INFORMATION # 365491699110725826
+
+- # ====== Process: Invite Participant =========================
+  id: 365518736732725867
+  identification: 
+    name: Invite Participant
+    type: Human Task - Manage
+
+  settings: 
+    type: Invite Participant
+    task-id-item: P15_TASK_ID
+    to-user-item: P15_NEW_POTENTIAL_OWNER
+
+  execution: 
+    sequence: 100
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Participant &P15_NEW_POTENTIAL_OWNER!HTML. added to task as potential owner
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: INVITE_PARTICIPANT # 365492802204725827
+
+- # ====== Process: Cancel Task ================================
+  id: 365519145942725867
+  identification: 
+    name: Cancel Task
+    type: Human Task - Manage
+
+  settings: 
+    type: Cancel
+    task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 110
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task canceled
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CANCEL_TASK # 365493968999725828
+
+- # ====== Process: Renew Task =================================
+  id: 365519480467725867
+  identification: 
+    name: Renew Task
+    type: Human Task - Manage
+
+  settings: 
+    type: Renew
+    task-id-item: P15_TASK_ID
+    renewed-task-id-item: P15_TASK_ID
+
+  execution: 
+    sequence: 120
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Task renewed
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: RENEW # 365498089306725832
+
+- # ====== Process: Set Success Message ========================
+  id: 365519954738725868
+  identification: 
+    name: Set Success Message
+    type: Execute Code
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: ':P15_SUCCESS_MESSAGE := apex_application.g_print_success_message;'
+
+  execution: 
+    sequence: 130
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    error-message: '#SQLERRM_TEXT#'
+    display-location: Inline in Notification
+
+- # ====== Process: Close Dialog ===============================
+  id: 365520347358725868
+  identification: 
+    name: Close Dialog
+    type: Close Dialog
+
+  execution: 
+    sequence: 140
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: '&P15_SUCCESS_MESSAGE.'
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    type: Request is NOT contained in Value
+    value: CLAIM,SET_PRIORITY,SET_DUE,INVITE_PARTICIPANT,RENEW
+
+branches: 
+- # ====== Branch: Reload Dialog ===============================
+  id: 365532714338725881
+  identification: 
+    name: Reload Dialog
+
+  execution: 
+    sequence: 10
+    point: After Processing
+
+  behavior: 
+    type: Page or URL (Redirect)
+    target: 
+      url: 'f?p=&APP_ID.:&APP_PAGE_ID.:&APP_SESSION.::&DEBUG.::P15_TASK_ID:&P15_TASK_ID.&success_msg=#SUCCESS_MSG#'
+      page: '&APP_PAGE_ID.'
+      values: 
+        p15_task_id: '&P15_TASK_ID.'
+

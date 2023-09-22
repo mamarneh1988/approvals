@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+############ ddl.parms  ########################################
+BODY                           : ON
+COLLATION_CLAUSE               : NEVER
+CONSTRAINTS                    : ON
+CONSTRAINTS_AS_ALTER           : ON
+EMIT_SCHEMA                    : OFF
+FORCE                          : ON
+INHERIT                        : ON
+INSERT                         : ON
+OID                            : ON
+PARTITIONING                   : OFF
+PRETTY                         : ON
+REF_CONSTRAINTS                : ON
+SEGMENT_ATTRIBUTES             : OFF
+SIZE_BYTE_KEYWORD              : ON
+SPECIFICATION                  : ON
+SQLTERMINATOR                  : ON
+STORAGE                        : OFF
+TABLESPACE                     : OFF
+
+############ lb.parameters ########################################
+basecommand                    : lb
+command                        : generate-schema
+database-changelog-table-name  : DATABASECHANGELOG
+fail-on-error                  : false
+grants                         : false
+log                            : false
+replace                        : true
+runalways                      : false
+runonchange                    : true
+split                          : true
+sqlclversion                   : 23.2.0.0
+synonyms                       : false
+############ End Parameters #######################################
+-->
+<databaseChangeLog 
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <include file="table/eba_demo_appr_dept_table.xml"/> 
+  <include file="table/eba_demo_appr_laptop_requests_table.xml"/> 
+  <include file="table/eba_demo_appr_approvers_table.xml"/> 
+  <include file="package_spec/eba_demo_appr_package_spec.xml"/> 
+  <include file="package_spec/eba_demo_appr_data_package_spec.xml"/> 
+  <include file="table/eba_demo_appr_emp_table.xml"/> 
+  <include file="table/eba_demo_appr_sal_history_table.xml"/> 
+  <include file="package_body/eba_demo_appr_package_body.xml"/> 
+  <include file="package_body/eba_demo_appr_data_package_body.xml"/> 
+</databaseChangeLog> 

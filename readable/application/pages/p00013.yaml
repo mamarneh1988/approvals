@@ -1,0 +1,585 @@
+---
+# ====== Page: Help ==========================================
+id: 13
+identification: 
+  name: Help
+  alias: HELP
+  title: Help
+
+appearance: 
+  page-mode: Normal
+  page-template: Left Side Column # 294249961681215796
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: false
+
+html-header: 
+  html-header: |
+    <style>
+    div.helpContainer{width:960px;margin:16px auto;zoom:1}
+    div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+    div.helpContainer:after{clear:both}
+    div.helpContainer div.helpSide{float:left;width:300px}
+    div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+    div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+    div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+    div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+    div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+    div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+    div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+    div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+    div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+    div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+    </style>
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: On
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Always
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Help Topics =================================
+  id: 5357028606031726
+  identification: 
+    title: Help Topics
+    type: Region Display Selector
+
+  layout: 
+    sequence: 30
+    parent-region: No Parent
+    position: REGION_POSITION_02
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard # 294343348039215884
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      mode: View Single Region
+      include-'show-all': true
+      remember-last-selection: true
+
+- # ====== Region: Application Details =========================
+  id: 5356851646031724
+  identification: 
+    title: Application Details
+    type: Classic Report
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select aa.version app_version,
+             to_char(aa.pages,'999G999G990') pages,
+             'Oracle' vendor
+      from apex_applications aa
+      where aa.application_id = :APP_ID
+
+  layout: 
+    sequence: 20
+    parent-region: No Parent
+    position: REGION_POSITION_02
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes (No Grid) # 294284314976215830
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    layout: 
+      number-of-rows-type: Static Value
+      number-of-rows: 15
+
+    appearance: 
+      template-type: Theme
+      template: Value Attribute Pairs - Column # 294384297211215920
+      template-options: 
+      - '#DEFAULT#'
+      - t-AVPList--rightAligned
+      show-null-values-as: '-'
+
+    pagination: 
+      type: No Pagination (Show All Rows)
+      partial-page-refresh: true
+
+    performance: 
+      lazy-loading: false
+
+    break-formatting: 
+      break-columns: No Break
+
+    advanced: 
+      strip-html: false
+      sort-nulls: Last
+
+    heading: 
+      type: Custom Headings
+
+    download: 
+      csv-export-enabled: false
+
+    printing: 
+      enabled: false
+
+  columns: 
+  - # ====== Column: APP_VERSION =================================
+    id: 5356737031031723
+    identification: 
+      column-name: APP_VERSION
+      type: Plain Text
+
+    heading: 
+      heading: App version
+      alignment: start
+
+    layout: 
+      sequence: 10
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: PAGES =======================================
+    id: 5356649124031722
+    identification: 
+      column-name: PAGES
+      type: Plain Text
+
+    heading: 
+      heading: Pages
+      alignment: start
+
+    layout: 
+      sequence: 20
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+  - # ====== Column: VENDOR ======================================
+    id: 5356621367031721
+    identification: 
+      column-name: VENDOR
+      type: Plain Text
+
+    heading: 
+      heading: Vendor
+      alignment: start
+
+    layout: 
+      sequence: 30
+      column-alignment: start
+
+    accessibility: 
+      value-identifies-row: false
+
+    sorting: 
+      sortable: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    advanced: 
+      compute-sum: false
+
+    ui-defaults-reference: 
+      table-owner: Parsing Schema
+
+    security: 
+      escape-special-characters: true
+
+- # ====== Region: Submitting Change Requests ==================
+  id: 999281764011470
+  identification: 
+    title: Submitting Change Requests
+    type: Static Content
+
+  source: 
+    html-code: |
+      <p>
+          To request the change of an employee's salary or job, navigate
+          to the <i>Employee Changes</i> page. A
+          Cards region displays all the employees with a select list at
+          the top allowing you to sort the list by Name, Job, or Salary.
+          Click the <i>Edit Salary</i> or
+          <i>Edit Job</i> buttons to request a
+          change to Salary or Job, respectively.
+      </p>
+
+  layout: 
+    sequence: 50
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Approving Change Requests ===================
+  id: 218944341157396332
+  identification: 
+    title: Approving Change Requests
+    type: Static Content
+
+  source: 
+    html-code: |
+      <p>
+          You can use the <i>Pending Approvals</i> page to see which
+          sample user or users are assigned to review the task for
+          approval. Log in as one of those sample users and visit
+          the <i>Approvals</i> page to see their unified task list.
+          Clicking on the subject of a task opens the task details,
+          allowing users to comment on the task, view its history,
+          and claim/approve/reject it if applicable. Task approvers can 
+          also approve or reject it directly from the unified task list.
+      </p>
+
+  layout: 
+    sequence: 60
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: &APP_NAME. ==================================
+  id: 2049626788857039408
+  identification: 
+    title: '&APP_NAME.'
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: REGION_POSITION_02
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Hero # 294315568240215861
+    template-options: 
+    - '#DEFAULT#'
+    - t-HeroRegion--featured t-HeroRegion--centered
+    render-components: Above Content
+
+  image: 
+    file-url: '#APP_FILES#icons/app-icon-512.png'
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: About this Application ======================
+  id: 3241097486688635789
+  identification: 
+    title: About this Application
+    type: Static Content
+
+  source: 
+    html-code: |
+      <p>This application highlights the Approval Components capabilities of Oracle APEX.</p>
+      <p>Use this application to better understand the native and declarative functionality of APEX.</p>
+      
+      
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Need Help? ==================================
+  id: 3241097879692635790
+  identification: 
+    title: Need Help?
+    type: Static Content
+
+  source: 
+    html-code: '<p>If you have questions, ask them on the <a href="https://apex.oracle.com/forum">Oracle APEX Discussion Forum</a>.</p>'
+
+  layout: 
+    sequence: 70
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: User Accounts for Approvals =================
+  id: 3241098086201635790
+  identification: 
+    title: User Accounts for Approvals
+    type: Static Content
+
+  source: 
+    html-code: |2
+          <p>
+               Any user can request the change of an employee's salary or
+               job, but the sample application assumes you have created the
+               following Oracle APEX users in your workspace that are related to the
+               approval and administration of the created <i>Salary
+                  Change</i> and <i>Job Change</i> tasks:
+                     <tt>BO</tt>, <tt>JANE</tt>,
+                     <tt>PAT</tt>, <tt>STEVE</tt>
+         </p>
+      
+      
+
+  layout: 
+    sequence: 30
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h3
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+

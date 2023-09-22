@@ -1,0 +1,1569 @@
+---
+# ====== Page: My Approvals ==================================
+id: 3
+identification: 
+  name: My Approvals
+  alias: MY-APPROVALS
+  title: My Approvals
+
+appearance: 
+  page-mode: Normal
+  page-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Breadcrumb ==================================
+  id: 1043653006067101501
+  identification: 
+    title: Breadcrumb
+    type: Breadcrumb
+
+  source: 
+    breadcrumb: Breadcrumb # 294246200659215771
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: REGION_POSITION_01
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Title Bar # 294355728737215894
+    template-options: 
+    - '#DEFAULT#'
+    - t-BreadcrumbRegion--useBreadcrumbTitle
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    appearance: 
+      breadcrumb-template: Breadcrumb # 294417891517215966
+      template-options: 
+      - '#DEFAULT#'
+
+- # ====== Region: My Approvals - Smart Filters ================
+  id: 1043654129999101503
+  identification: 
+    title: My Approvals - Smart Filters
+    type: Smart Filters
+
+  source: 
+    filtered-region: My Approvals - Report # 1043654212342101503
+
+  layout: 
+    sequence: 10
+    parent-region: Breadcrumb # 1043653006067101501
+    position: SMART_FILTERS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes (No Grid) # 294284314976215830
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      maximum-suggestion-chips: 0
+      more-filters-suggestion-chip: false
+      compact-numbers-threshold: 10000
+      show-total-row-count: No
+
+  facets: 
+  - # ====== Facet: P3_SEARCH ====================================
+    id: 363974233603925491
+    identification: 
+      name: P3_SEARCH
+      type: Search
+
+    label: 
+      label: Search
+
+    settings: 
+      search-type: Row Search
+      input-field: Top of Faceted Search Region
+
+    layout: 
+      sequence: 10
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+  - # ====== Facet: P3_DUE =======================================
+    id: 363974657659925491
+    identification: 
+      name: P3_DUE
+      type: Range
+
+    label: 
+      label: Due
+      show-label-for-current-facet: true
+
+    settings: 
+      select-multiple: true
+      manual-entry: false
+
+    layout: 
+      sequence: 20
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.DUE # 217573650027315721
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: DUE_IN_HOURS
+      data-type: NUMBER
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+  - # ====== Facet: P3_TYPE ======================================
+    id: 363974985375925491
+    identification: 
+      name: P3_TYPE
+      type: Checkbox Group
+
+    label: 
+      label: Type
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 30
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: TASK_DEF_NAME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_PRIORITY ==================================
+    id: 363975460527925492
+    identification: 
+      name: P3_PRIORITY
+      type: Checkbox Group
+
+    label: 
+      label: Priority
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 40
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.PRIORITY # 217577116867315738
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: false
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: PRIORITY
+      data-type: NUMBER
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_STATE =====================================
+    id: 363975781229925492
+    identification: 
+      name: P3_STATE
+      type: Checkbox Group
+
+    label: 
+      label: State
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 50
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.STATE # 217577867088315738
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: false
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: STATE_CODE
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_OUTCOME ===================================
+    id: 363976222601925492
+    identification: 
+      name: P3_OUTCOME
+      type: Checkbox Group
+
+    label: 
+      label: Outcome
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 60
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: OUTCOME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_APPLICATION ===============================
+    id: 363976621214925493
+    identification: 
+      name: P3_APPLICATION
+      type: Checkbox Group
+
+    label: 
+      label: Application
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 70
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: DETAILS_APP_NAME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_INITIATOR =================================
+    id: 363977039834925493
+    identification: 
+      name: P3_INITIATOR
+      type: Checkbox Group
+
+    label: 
+      label: Initiator
+      show-label-for-current-facet: true
+
+    layout: 
+      sequence: 80
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: INITIATOR_LOWER
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Facet: P3_INITIATED =================================
+    id: 363977428456925494
+    identification: 
+      name: P3_INITIATED
+      type: Range
+
+    label: 
+      label: Initiated
+      show-label-for-current-facet: true
+
+    settings: 
+      select-multiple: true
+      manual-entry: false
+
+    layout: 
+      sequence: 90
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.INITIATED # 217579352141315745
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      show-selected-first: false
+      display-filter-initially: false
+
+    actions-menu: 
+      filter: true
+      chart: false
+
+    advanced: 
+      display-toggling: false
+      collapsible: false
+
+    source: 
+      database-column: CREATED_AGO_HOURS
+      data-type: NUMBER
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+  filters: 
+  - # ====== Filter: P3_SEARCH ===================================
+    id: 363974233603925491
+    identification: 
+      name: P3_SEARCH
+      type: Search
+
+    label: 
+      label: Search
+
+    settings: 
+      search-type: Row Search
+      collapsed-search-field: false
+
+    layout: 
+      sequence: 10
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+  - # ====== Filter: P3_DUE ======================================
+    id: 363974657659925491
+    identification: 
+      name: P3_DUE
+      type: Range
+
+    label: 
+      label: Due
+
+    settings: 
+      select-multiple: true
+      manual-entry: false
+
+    layout: 
+      sequence: 20
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.DUE # 217573650027315721
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: DUE_IN_HOURS
+      data-type: NUMBER
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+  - # ====== Filter: P3_TYPE =====================================
+    id: 363974985375925491
+    identification: 
+      name: P3_TYPE
+      type: Checkbox Group
+
+    label: 
+      label: Type
+
+    layout: 
+      sequence: 30
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: TASK_DEF_NAME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_PRIORITY =================================
+    id: 363975460527925492
+    identification: 
+      name: P3_PRIORITY
+      type: Checkbox Group
+
+    label: 
+      label: Priority
+
+    layout: 
+      sequence: 40
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.PRIORITY # 217577116867315738
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: false
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: PRIORITY
+      data-type: NUMBER
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_STATE ====================================
+    id: 363975781229925492
+    identification: 
+      name: P3_STATE
+      type: Checkbox Group
+
+    label: 
+      label: State
+
+    layout: 
+      sequence: 50
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.STATE # 217577867088315738
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: false
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: STATE_CODE
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_OUTCOME ==================================
+    id: 363976222601925492
+    identification: 
+      name: P3_OUTCOME
+      type: Checkbox Group
+
+    label: 
+      label: Outcome
+
+    layout: 
+      sequence: 60
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: OUTCOME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_APPLICATION ==============================
+    id: 363976621214925493
+    identification: 
+      name: P3_APPLICATION
+      type: Checkbox Group
+
+    label: 
+      label: Application
+
+    layout: 
+      sequence: 70
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: DETAILS_APP_NAME
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_INITIATOR ================================
+    id: 363977039834925493
+    identification: 
+      name: P3_INITIATOR
+      type: Checkbox Group
+
+    label: 
+      label: Initiator
+
+    layout: 
+      sequence: 80
+
+    list-of-values: 
+      type: Distinct Values
+      include-null-option: false
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      sort-by-top-counts: true
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: INITIATOR_LOWER
+      data-type: VARCHAR2
+
+    multiple-values: 
+      type: No
+
+    security: 
+      store-value-encrypted-in-session-state: true
+      escape-special-characters: true
+
+  - # ====== Filter: P3_INITIATED ================================
+    id: 363977428456925494
+    identification: 
+      name: P3_INITIATED
+      type: Range
+
+    label: 
+      label: Initiated
+
+    settings: 
+      select-multiple: true
+      manual-entry: false
+
+    layout: 
+      sequence: 90
+
+    list-of-values: 
+      type: Shared Component
+      list-of-values: UNIFIED_TASK_LIST.LOV.INITIATED # 217579352141315745
+
+    list-entries: 
+      compute-counts: true
+      show-counts: true
+      zero-count-entries: Hide
+      show-selected-first: false
+      client-side-filtering: false
+
+    suggestions: 
+      type: Dynamic
+      show-label: true
+
+    source: 
+      database-column: CREATED_AGO_HOURS
+      data-type: NUMBER
+
+    security: 
+      store-value-encrypted-in-session-state: true
+
+- # ====== Region: My Approvals - Report =======================
+  id: 1043654212342101503
+  identification: 
+    title: My Approvals - Report
+    type: Cards
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select *
+        from table (
+            apex_approval.get_tasks (
+                p_context            => 'MY_TASKS',
+                p_show_expired_tasks => :P3_SHOW_EXPIRED ) )
+    page-items-to-submit: 
+    - P3_SHOW_EXPIRED
+    order-by-item: 
+      item-name: P3_SORT_BY
+      order-bys: 
+      - key: CREATED_ON
+        clause: created_on desc
+
+      - key: DUE_ON
+        clause: priority asc, due_on asc nulls last
+
+    optimizer-hint: APEX$USE_NO_GROUPING_SETS
+
+  layout: 
+    sequence: 30
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Cards Container # 294290063204215835
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 363970566737925487
+    appearance: 
+      layout: Horizontal (Row)
+
+    card: 
+      primary-key-column-1: TASK_ID
+
+    title: 
+      advanced-formatting: false
+      column: SUBJECT
+
+    subtitle: 
+      advanced-formatting: true
+      html-expression: |
+        <small role="group" aria-label="Task Details">
+            <strong>&TASK_DEF_NAME!HTML.</strong>
+        {if INITIATOR/}
+            <span role="separator" aria-label="&middot;"> &middot; </span> Initiated by &INITIATOR_LOWER!HTML. 
+        {endif/}
+        {if !IS_COMPLETED/}
+            {case DUE_CODE/}
+                {when OVERDUE/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span><strong class="u-danger-text">Due &DUE_IN.</strong>
+                {when NEXT_HOUR/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span> <strong class="u-danger-text">Due &DUE_IN.</strong>
+                {when NEXT_24_HOURS/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span> <span class="u-danger-text">Due &DUE_IN.</span>
+                {otherwise/}
+                    {if DUE_IN/}<span role="separator" aria-label="&middot;"> &middot; </span> <span>Due &DUE_IN.</span>{endif/}
+            {endcase/}
+        {endif/}
+        {if !IS_COMPLETED/}
+            {case PRIORITY/}
+                {when 1/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span> <strong class="u-danger-text">Urgent</strong>
+                {when 2/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span> <span class="u-danger-text">High priority</span>
+            {endcase/}
+        {endif/}
+        </small>
+
+    body: 
+      advanced-formatting: false
+
+    secondary-body: 
+      advanced-formatting: false
+
+    icon-and-badge: 
+      icon-source: No Icon
+      badge-column: BADGE_TEXT
+      badge-css-classes: 
+      - '&BADGE_CSS_CLASSES.'
+
+    media: 
+      advanced-formatting: false
+      source: No Media
+
+    performance: 
+      lazy-loading: false
+
+    pagination: 
+      type: Scroll
+      show-total-row-count: false
+
+    messages: 
+      when-no-data-found: There are no tasks for you to approve.
+      no-data-found-icon: fa-clipboard-check-alt fa-lg
+
+    actions: 
+    - # ====== Action: TITLE =======================================
+      id: 363970982267925487
+      identification: 
+        type: Title
+
+      layout: 
+        sequence: 10
+
+      link: 
+        type: Redirect to URL
+        target: '&DETAILS_LINK_TARGET.'
+
+    - # ====== Action: BUTTON ======================================
+      id: 363971639529925488
+      identification: 
+        type: Button
+        label: Approve
+
+      layout: 
+        position: Secondary
+        sequence: 20
+
+      link: 
+        type: Redirect to URL
+        target: '#'
+        link-attributes: data-id="&TASK_ID."
+
+      appearance: 
+        display-type: Text with Icon
+        icon: fa-check-square u-success-text
+        hot: false
+        css-classes: 
+        - approve
+
+    - # ====== Action: BUTTON ======================================
+      id: 363972229048925488
+      identification: 
+        type: Button
+        label: Reject
+
+      layout: 
+        position: Secondary
+        sequence: 30
+
+      link: 
+        type: Redirect to URL
+        target: '#'
+        link-attributes: data-id="&TASK_ID."
+
+      appearance: 
+        display-type: Text with Icon
+        icon: fa-times u-danger-text
+        hot: false
+        css-classes: 
+        - reject
+
+- # ====== Region: Overview ====================================
+  id: 2937558667012966365
+  identification: 
+    title: Overview
+    type: Static Content
+
+  source: 
+    html-code: <p>This page shows an approver the tasks requiring their attention. Use the search box to filter the list. Toggle between seeing the tasks ordered by Create Date or Due Date using the order by page item. The page was created using the <strong>Create Page</strong> wizard, choosing <strong>Unified Task List</strong> page type, and picking a <strong>Report Context</strong> of "My Tasks".</p>
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 8
+    column-css-classes: 
+    - col-sm-12
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h2
+    - js-headingLevel-2
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P3_SORT_BY ===============================
+  id: 363972779647925489
+  identification: 
+    name: P3_SORT_BY
+    type: Select List
+
+  label: 
+    label: Sort by
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 10
+    region: My Approvals - Report # 1043654212342101503
+    position: ORDER_BY_ITEM
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Hidden # 294413443239215954
+    template-options: 
+    - '#DEFAULT#'
+    icon: fa-sort-amount-desc
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC2:Create Date;CREATED_ON,Due Date;DUE_ON'
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    css-classes: 
+    - mnw160
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Static Value
+    static-value: DUE_ON
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per User (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P3_SHOW_EXPIRED ==========================
+  id: 363973222641925489
+  identification: 
+    name: P3_SHOW_EXPIRED
+    type: Checkbox
+
+  label: 
+    label: Show expired tasks
+    alignment: Left
+
+  settings: 
+    use-defaults: false
+    checked-value: Y
+    unchecked-value: N
+
+  layout: 
+    sequence: 20
+    region: My Approvals - Report # 1043654212342101503
+    position: ORDER_BY_ITEM
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Optional # 294413591684215956
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-pullRight
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Static Value
+    static-value: N
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per User (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P3_TASK_ID ===============================
+  id: 363978111444925495
+  identification: 
+    name: P3_TASK_ID
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 20
+    region: No Parent
+    position: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+dynamic-actions: 
+- # ====== Dynamic Action: Show Success Message ================
+  id: 363978519981925496
+  identification: 
+    name: Show Success Message
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.FAMEWORK.APEXAFTERCLOSECANCELDIALOG
+    selection-type: jQuery Selector
+    jquery-selector: body
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 363979002270925496
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        if ( this.data.successMessage ) {
+            apex.message.showPageSuccess(this.data.successMessage.text);
+        }
+
+    execution: 
+      sequence: 10
+      event: Show Success Message # 363978519981925496
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Approve =============================
+  id: 363979465412925497
+  identification: 
+    name: Approve
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: jQuery Selector
+    jquery-selector: a.approve
+
+  execution: 
+    event-scope: Dynamic
+    static-container-(jquery-selector): body
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Set Value ===================================
+    id: 363979969205925497
+    identification: 
+      action: Set Value
+
+    settings: 
+      set-type: JavaScript Expression
+      javascript-expression: this.triggeringElement.dataset.id
+      suppress-change-event: false
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P3_TASK_ID
+
+    execution: 
+      sequence: 10
+      event: Approve # 363979465412925497
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 363980380295925497
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        apex_approval.approve_task (
+            p_task_id   => :P3_TASK_ID,
+            p_autoclaim => true );
+      items-to-submit: 
+      - P3_TASK_ID
+
+    execution: 
+      sequence: 20
+      event: Approve # 363979465412925497
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 363980931896925498
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: apex.message.showPageSuccess('Task approved' );
+
+    affected-elements: 
+      selection-type: Region
+
+    execution: 
+      sequence: 30
+      event: Approve # 363979465412925497
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363981452306925498
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Smart Filters # 1043654129999101503
+
+    execution: 
+      sequence: 40
+      event: Approve # 363979465412925497
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363981959455925499
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Report # 1043654212342101503
+
+    execution: 
+      sequence: 50
+      event: Approve # 363979465412925497
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Reject ==============================
+  id: 363982330477925499
+  identification: 
+    name: Reject
+
+  execution: 
+    sequence: 20
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: jQuery Selector
+    jquery-selector: a.reject
+
+  execution: 
+    event-scope: Dynamic
+    static-container-(jquery-selector): body
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Set Value ===================================
+    id: 363982853070925499
+    identification: 
+      action: Set Value
+
+    settings: 
+      set-type: JavaScript Expression
+      javascript-expression: this.triggeringElement.dataset.id
+      suppress-change-event: false
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P3_TASK_ID
+
+    execution: 
+      sequence: 10
+      event: Reject # 363982330477925499
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 363983318594925500
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        apex_approval.reject_task (
+            p_task_id   => :P3_TASK_ID,
+            p_autoclaim => true );
+      items-to-submit: 
+      - P3_TASK_ID
+
+    execution: 
+      sequence: 20
+      event: Reject # 363982330477925499
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 363983808830925500
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: apex.message.showPageSuccess('Task rejected' );
+
+    affected-elements: 
+      selection-type: Region
+
+    execution: 
+      sequence: 30
+      event: Reject # 363982330477925499
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363984353676925500
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Smart Filters # 1043654129999101503
+
+    execution: 
+      sequence: 40
+      event: Reject # 363982330477925499
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363984812869925501
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Report # 1043654212342101503
+
+    execution: 
+      sequence: 50
+      event: Reject # 363982330477925499
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Refresh - My Tasks - Report =========
+  id: 363985181686925501
+  identification: 
+    name: Refresh - My Tasks - Report
+
+  execution: 
+    sequence: 20
+
+  when: 
+    event: EVENT.EVENT.FAMEWORK.APEXAFTERCLOSECANCELDIALOG
+    selection-type: Region
+    region: My Approvals - Report # 1043654212342101503
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 363985755789925501
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Report # 1043654212342101503
+
+    execution: 
+      sequence: 10
+      event: Refresh - My Tasks - Report # 363985181686925501
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363986225396925502
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Smart Filters # 1043654129999101503
+
+    execution: 
+      sequence: 20
+      event: Refresh - My Tasks - Report # 363985181686925501
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Refresh - My Tasks - Report =========
+  id: 363986626716925502
+  identification: 
+    name: Refresh - My Tasks - Report
+
+  execution: 
+    sequence: 30
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CHANGE
+    selection-type: Item(s)
+    item(s): 
+    - P3_SHOW_EXPIRED
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 363987088430925503
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Report # 1043654212342101503
+
+    execution: 
+      sequence: 10
+      event: Refresh - My Tasks - Report # 363986626716925502
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Refresh =====================================
+    id: 363987606830925503
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: My Approvals - Smart Filters # 1043654129999101503
+
+    execution: 
+      sequence: 20
+      event: Refresh - My Tasks - Report # 363986626716925502
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+

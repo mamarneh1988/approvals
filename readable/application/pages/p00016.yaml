@@ -1,0 +1,597 @@
+---
+# ====== Page: Request Laptop ================================
+id: 16
+identification: 
+  name: Request Laptop
+  alias: REQUEST-LAPTOP
+  title: Request Laptop
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  width: 340
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: First item on page
+  warn-on-unsaved-changes: true
+
+javascript: 
+  execute-when-page-loads: |
+    apex.items.P16_NEED_BY.dayFormatter = function (pDateISOString) {
+      const day = apex.date.parse(pDateISOString, "YYYY-MM-DD").getDay();
+      return {
+          // disable when day is Saturday or Sunday
+          disabled: [0, 6].includes(day),
+          // set a styling css class like u-danger-text
+          class: null,
+          // set a tooltip that is shown on hover
+          tooltip: null
+      };
+    };
+    apex.items.P16_NEED_BY.refresh();
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Request Laptop ==============================
+  id: 970736411946855925
+  identification: 
+    title: Request Laptop
+    type: Form
+
+  source: 
+    location: Local Database
+    type: Table / View
+    table-owner: Parsing Schema
+    table-name: EBA_DEMO_APPR_LAPTOP_REQUESTS
+    include-rowid-column: false
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes # 294282948967215830
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Add Row
+      - Update Row
+      - Delete Row
+      lost-update-type: Row Values
+
+- # ====== Region: Buttons =====================================
+  id: 970742962715855953
+  identification: 
+    title: Buttons
+    type: Static Content
+
+  layout: 
+    sequence: 20
+    parent-region: No Parent
+    position: REGION_POSITION_03
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Buttons Container # 294285750039215831
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: Text (escape special characters)
+      show-line-breaks: true
+
+page-items: 
+- # ====== Page Item: P16_EMPNO ================================
+  id: 357205452181733211
+  identification: 
+    name: P16_EMPNO
+    type: Display Only
+
+  label: 
+    label: Employee
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Display Value of List of Values
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 40
+    region: Request Laptop # 970736411946855925
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+
+  list-of-values: 
+    type: Shared Component
+    list-of-values: EBA_DEMO_CONF_EMP_LOV # 359196486427308118
+    display-extra-values: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    form-region: Request Laptop # 970736411946855925
+    column: EMPNO
+    data-type: NUMBER
+    query-only: false
+    primary-key: false
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P16_ID ===================================
+  id: 357213565957737131
+  identification: 
+    name: P16_ID
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 20
+    region: Request Laptop # 970736411946855925
+    position: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    form-region: Request Laptop # 970736411946855925
+    column: ID
+    data-type: NUMBER
+    query-only: false
+    primary-key: true
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Request (Memory Only)
+
+  security: 
+    session-state-protection: Checksum Required - Session Level
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P16_LAPTOP_TYPE ==========================
+  id: 357214073491737136
+  identification: 
+    name: P16_LAPTOP_TYPE
+    type: Select List
+
+  label: 
+    label: Laptop Type
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 50
+    region: Request Laptop # 970736411946855925
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Shared Component
+    list-of-values: AVAILABLE_LAPTOP_TYPES # 359197332070327982
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    form-region: Request Laptop # 970736411946855925
+    column: LAPTOP_TYPE
+    data-type: VARCHAR2
+    query-only: false
+    primary-key: false
+
+  default: 
+    type: Static
+    static-value: MAC
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P16_NEED_BY ==============================
+  id: 357215029189737146
+  identification: 
+    name: P16_NEED_BY
+    type: Date Picker
+
+  label: 
+    label: Need By
+    alignment: Left
+
+  settings: 
+    show-time: false
+    display-as: Inline
+    minimum-date: Item
+    minimum-item: P16_MINIMUM_DATE
+    maximum-date: None
+    multiple-months: No
+    use-defaults: false
+    appearance-&-behavior: Month Picker
+    days-outside-month: Visible
+    show-on: Item Focus
+
+  layout: 
+    sequence: 60
+    region: Request Laptop # 970736411946855925
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 294413744163215958
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: YYYYMMDDHH24MI
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    form-region: Request Laptop # 970736411946855925
+    column: NEED_BY
+    data-type: DATE
+    query-only: false
+    primary-key: false
+
+  session-state: 
+    storage: Per Request (Memory Only)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P16_MINIMUM_DATE =========================
+  id: 357215080719737147
+  identification: 
+    name: P16_MINIMUM_DATE
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 70
+    region: Request Laptop # 970736411946855925
+    position: BODY
+
+  appearance: 
+    format-mask: YYYYMMDDHH24MI
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: CANCEL ======================================
+  id: 357209701876733220
+  identification: 
+    button-name: CANCEL
+    label: Cancel
+
+  layout: 
+    sequence: 10
+    region: Buttons # 970742962715855953
+    position: CLOSE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+- # ====== Button: SUBMIT_FOR_APPROVAL =========================
+  id: 357210151415733222
+  identification: 
+    button-name: SUBMIT_FOR_APPROVAL
+    label: Submit
+
+  layout: 
+    sequence: 30
+    region: Buttons # 970742962715855953
+    position: NEXT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text # 294416203109215963
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    warn-on-unsaved-changes: Do Not Check
+    database-action: SQL INSERT action
+
+  server-side-condition: 
+    type: Item is NOT NULL
+    item: P16_EMPNO
+
+dynamic-actions: 
+- # ====== Dynamic Action: Cancel Dialog =======================
+  id: 357212488411733234
+  identification: 
+    name: Cancel Dialog
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CLICK
+    selection-type: Button
+    button: CANCEL # 357209701876733220
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Cancel Dialog ===============================
+    id: 357212996270733236
+    identification: 
+      action: Cancel Dialog
+
+    execution: 
+      sequence: 10
+      event: Cancel Dialog # 357212488411733234
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+computations: 
+- # ====== Computation: P16_MINIMUM_DATE =======================
+  id: 357215174406737148
+  identification: 
+    item-name: P16_MINIMUM_DATE
+
+  execution: 
+    sequence: 10
+    point: Before Header
+
+  computation: 
+    type: Expression
+    language: SQL
+    sql-expression: to_char((sysdate + 7) + case to_char(sysdate + 7, 'fmDay','NLS_DATE_LANGUAGE = AMERICAN') when 'Saturday' then 2 when 'Sunday' then 1 else 0 end,'YYYYMMDDHH24MI') min_date
+
+- # ====== Computation: P16_NEED_BY ============================
+  id: 357215294800737149
+  identification: 
+    item-name: P16_NEED_BY
+
+  execution: 
+    sequence: 20
+    point: Before Header
+
+  computation: 
+    type: Expression
+    language: SQL
+    sql-expression: to_char((sysdate + 14) + case to_char(sysdate + 14, 'fmDay','NLS_DATE_LANGUAGE = AMERICAN') when 'Saturday' then 2 when 'Sunday' then 1 else 0 end,'YYYYMMDDHH24MI') min_date
+
+processes: 
+- # ====== Process: Initialize form Request Salary Change ======
+  id: 357208661685733218
+  identification: 
+    name: Initialize form Request Salary Change
+    type: Form - Initialization
+    form-region: Request Laptop # 970736411946855925
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: Process form Request Laptop ================
+  id: 357208989379733219
+  identification: 
+    name: Process form Request Laptop
+    type: Form - Automatic Row Processing (DML)
+    form-region: Request Laptop # 970736411946855925
+
+  settings: 
+    target-type: Region Source
+    prevent-lost-updates: true
+    lock-row: Yes
+    return-primary-key(s)-after-insert: true
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+- # ====== Process: Submit Task ================================
+  id: 357211329551733227
+  identification: 
+    name: Submit Task
+    type: Human Task - Create
+
+  settings: 
+    definition: Laptop Request # 353594115780845834
+    details-primary-key--item: P16_ID
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: SUBMIT_FOR_APPROVAL # 357210151415733222
+
+- # ====== Process: Close Dialog ===============================
+  id: 357212265736733233
+  identification: 
+    name: Close Dialog
+    type: Close Dialog
+
+  execution: 
+    sequence: 40
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    type: Request is contained in Value
+    value: CREATE,SUBMIT_FOR_APPROVAL,DELETE
+

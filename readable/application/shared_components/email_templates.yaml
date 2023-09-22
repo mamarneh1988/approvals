@@ -1,0 +1,16 @@
+---
+- # ====== Email Template: Job Change Notification =============
+  id: 310944013143552178
+  identification: 
+    name: Job Change Notification
+    email-subject: 'Job Change for #P_ENAME# Completed'
+
+  html-format: 
+    header: '<b style="font-size: 24px;">Sample Approvals</b>'
+    body: |
+      Hello,<br>
+      The job change for #P_ENAME# from #P_JOB_BEFORE# to #P_JOB_AFTER# has been approved and is now complete.
+
+  advanced: 
+    static-id: JOB_CHANGE_NOTIFICATION
+

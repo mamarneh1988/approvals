@@ -1,0 +1,451 @@
+---
+# ====== Page: Employees =====================================
+id: 8
+identification: 
+  name: Employees
+  alias: EMPLOYEES
+  title: Employees
+
+appearance: 
+  page-mode: Normal
+  page-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+css: 
+  inline: |
+    :root {
+       --a-cv-item-width: 15rem;
+    }
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Employees ===================================
+  id: 611188774449537217
+  identification: 
+    title: Employees
+    type: Cards
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select e.EMPNO,
+             e.ENAME,
+             e.JOB,
+             e.SAL,
+             CASE WHEN t1.task_id IS NOT NULL THEN 'Y' ELSE 'N' end as pending_sal_approval,
+             CASE WHEN t2.task_id IS NOT NULL THEN 'Y' ELSE 'N' end as pending_job_approval,
+             CASE WHEN r.id       IS NOT NULL THEN 'Y' ELSE 'N' end as pending_laptop_approval      
+        from EBA_DEMO_APPR_EMP e
+        left outer join APEX_TASKS T1 
+          on t1.detail_pk = e.empno 
+          and t1.application_id = :APP_ID 
+          and t1.task_def_static_id = 'SALARY_CHANGE'
+          and t1.state_code in ('UNASSIGNED','ASSIGNED')
+        left outer join APEX_TASKS T2 
+          on t2.detail_pk = e.empno 
+          and t2.application_id = :APP_ID 
+          and t2.task_def_static_id = 'JOB_CHANGE'
+          and t2.state_code in ('UNASSIGNED','ASSIGNED')
+         left outer join EBA_DEMO_APPR_LAPTOP_REQUESTS R 
+          on r.empno = e.empno and (r.status = 'PENDING' or (r.status = 'APPROVED' and r.delivered_date is null))
+      
+       
+    order-by-item: 
+      item-name: P8_ORDER_BY
+      order-bys: 
+      - key: ENAME
+        clause: ENAME
+
+      - key: JOB
+        clause: JOB
+
+      - key: SAL
+        clause: SAL DESC
+
+  layout: 
+    sequence: 30
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Cards Container # 294290063204215835
+    template-options: 
+    - '#DEFAULT#'
+    - t-CardsRegion--styleC
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 1002992291052557
+    appearance: 
+      layout: Grid
+      grid-columns: Auto
+
+    title: 
+      advanced-formatting: false
+      column: ENAME
+
+    subtitle: 
+      advanced-formatting: false
+
+    body: 
+      advanced-formatting: true
+      html-expression: |
+        <strong>Job:</strong> &JOB.<br />
+        <strong>Salary:</strong> $&SAL.
+
+    secondary-body: 
+      advanced-formatting: false
+
+    icon-and-badge: 
+      icon-source: Initials
+      icon-column: ENAME
+      icon-position: End
+
+    media: 
+      advanced-formatting: false
+      source: No Media
+
+    performance: 
+      lazy-loading: false
+
+    pagination: 
+      type: Scroll
+      show-total-row-count: false
+
+    actions: 
+    - # ====== Action: BUTTON ======================================
+      id: 1003561427052560
+      identification: 
+        type: Button
+        label: Salary
+
+      layout: 
+        position: Primary
+        sequence: 10
+
+      link: 
+        type: Redirect to Page in this Application
+        target: 
+          url: 'f?p=&APP_ID.:4:&SESSION.::&DEBUG.::P4_EMPNO:&EMPNO.'
+          page: 4 # Request Salary Change
+          values: 
+            p4_empno: '&EMPNO.'
+
+      appearance: 
+        display-type: Text with Icon
+        icon: fa-edit
+        hot: false
+        css-classes: 
+        - t-Button--small
+
+      server-side-condition: 
+        type: Item = Value
+        item: PENDING_SAL_APPROVAL
+        value: N
+        execute-condition: For Each Row
+
+    - # ====== Action: BUTTON ======================================
+      id: 1004095602052582
+      identification: 
+        type: Button
+        label: Job
+
+      layout: 
+        position: Primary
+        sequence: 20
+
+      link: 
+        type: Redirect to Page in this Application
+        target: 
+          url: 'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::P7_EMPNO:&EMPNO.'
+          page: 7 # Request Job Change
+          values: 
+            p7_empno: '&EMPNO.'
+
+      appearance: 
+        display-type: Text with Icon
+        icon: fa-edit
+        hot: false
+        css-classes: 
+        - t-Button--small
+
+      server-side-condition: 
+        type: Item = Value
+        item: PENDING_JOB_APPROVAL
+        value: N
+        execute-condition: For Each Row
+
+    - # ====== Action: BUTTON ======================================
+      id: 357214174056737138
+      identification: 
+        type: Button
+        label: Laptop
+
+      layout: 
+        position: Primary
+        sequence: 30
+
+      link: 
+        type: Redirect to Page in this Application
+        target: 
+          url: 'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:16:P16_EMPNO:&EMPNO.'
+          page: 16 # Request Laptop
+          clear-cache: 16
+          values: 
+            p16_empno: '&EMPNO.'
+
+      appearance: 
+        display-type: Text with Icon
+        icon: fa-laptop
+        hot: false
+        css-classes: 
+        - t-Button--small
+
+      server-side-condition: 
+        type: Item = Value
+        item: PENDING_LAPTOP_APPROVAL
+        value: N
+        execute-condition: For Each Row
+
+- # ====== Region: Breadcrumb ==================================
+  id: 611190297085537222
+  identification: 
+    title: Breadcrumb
+    type: Breadcrumb
+
+  source: 
+    breadcrumb: Breadcrumb # 294246200659215771
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: REGION_POSITION_01
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Title Bar # 294355728737215894
+    template-options: 
+    - '#DEFAULT#'
+    - t-BreadcrumbRegion--useBreadcrumbTitle
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    appearance: 
+      breadcrumb-template: Breadcrumb # 294417891517215966
+      template-options: 
+      - '#DEFAULT#'
+
+- # ====== Region: Overview ====================================
+  id: 1292401535733932426
+  identification: 
+    title: Overview
+    type: Static Content
+
+  source: 
+    html-code: <p>This page shows all employees and allows a user to initiate a job change request, a salary change request, or a laptop request by clicking the appropriate button on an employee's card. If a job or salary change for an employee is already awaiting approval, its respective button is not shown. Similarly if a laptop request approval is pending or an approved request still has no delivered date, then the laptop button is not shown for that employee. The order by page item lets the user choose to sort by Name, Job, or Salary.</p>
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    position: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 8
+    column-css-classes: 
+    - col-sm-12
+
+  appearance: 
+    template: Content Block # 294311358452215853
+    template-options: 
+    - '#DEFAULT#'
+    - t-ContentBlock--h2
+    - js-headingLevel-2
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P8_ORDER_BY ==============================
+  id: 1004696948052582
+  identification: 
+    name: P8_ORDER_BY
+    type: Select List
+
+  label: 
+    label: Order By
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 10
+    region: Employees # 611188774449537217
+    position: ORDER_BY_ITEM
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Hidden # 294413443239215954
+    template-options: 
+    - '#DEFAULT#'
+    - t-Form-fieldContainer--large
+    css-classes: 
+    - u-pullRight
+    icon: fa-sort-amount-desc
+    height: 1
+
+  validation: 
+    value-required: true
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC2:Name;ENAME,Job;JOB,Salary;SAL'
+    display-extra-values: false
+    display-null-value: false
+
+  advanced: 
+    css-classes: 
+    - mnw160
+    warn-on-unsaved-changes: Ignore
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: ENAME
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+dynamic-actions: 
+- # ====== Dynamic Action: On Modal Dialog Closed ==============
+  id: 1005409151052599
+  identification: 
+    name: On Modal Dialog Closed
+
+  execution: 
+    sequence: 10
+
+  when: 
+    event: EVENT.EVENT.FAMEWORK.APEXAFTERCLOSEDIALOG
+    selection-type: JavaScript Expression
+    javascript-expression: document
+
+  execution: 
+    event-scope: Static
+    type: Immediate
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 1005907894052614
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: Employees # 611188774449537217
+
+    execution: 
+      sequence: 10
+      event: On Modal Dialog Closed # 1005409151052599
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
