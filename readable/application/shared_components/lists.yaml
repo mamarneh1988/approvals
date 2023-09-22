@@ -121,6 +121,33 @@
     type: Static Values
 
   entries: 
+  - # ====== Entry: test git =====================================
+    id: 315337325227101943
+    label: 
+      label: test git
+
+    icon: 
+      image/icon-css-classes: fa-file-o
+
+    layout: 
+      sequence: 100
+
+    is-current: 
+      type: Pages
+      pages: 
+      - 22
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:22:&APP_SESSION.::&DEBUG.:::'
+        page: 22 # test git
+
+    click-counting: 
+      count-clicks: false
+
+    user-defined-attributes: 
+      translatable: false
+
   - # ====== Entry: Setup ========================================
     id: 1007978133101517
     label: 

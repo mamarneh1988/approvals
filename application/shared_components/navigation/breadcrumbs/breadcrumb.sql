@@ -16,6 +16,12 @@ wwv_flow_imp_shared.create_menu(
 ,p_name=>'Breadcrumb'
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(315336466506101935)
+,p_short_name=>'test git'
+,p_link=>'f?p=&APP_ID.:22:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>22
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(1008936011101525)
 ,p_short_name=>'Setup'
 ,p_link=>'f?p=&APP_ID.:21:&SESSION.::&DEBUG.:::'
