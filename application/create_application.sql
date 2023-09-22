@@ -51,8 +51,8 @@ wwv_flow_imp.create_flow(
 ,p_email_from=>'APEX Sample Approvals <oracle-application-express_ww@oracle.com>'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Approvals'
-,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20221121155423'
+,p_last_updated_by=>'MAMARNEH'
+,p_last_upd_yyyymmddhh24miss=>'20230922221442'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>153
 ,p_print_server_type=>'NATIVE'
